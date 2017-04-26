@@ -1,5 +1,16 @@
-# Tournament class organizes all of the games and holds the winners for each
-# round.
+"""Tournament class organizes all of the games and holds the winners for each
+series. Tournament is organized into four divisions:
+    -East
+    -West
+    -Midwest
+    -South
+Each division runs a seeded Regional series and returns the winner to a
+dictionary value: key of Division: division_winner
+
+Division winners then face off in matches of East-West and Midwest-South
+
+Championship returns winner between final two teams and prints score projection.
+"""
 
 from NCAABB.Game import Game
 
@@ -8,65 +19,116 @@ class Tournament(object):
     def __init__(self, teams):
         self.winner = None
         self.teams = teams
+        self.division_champs = {}
+        self.final_four = []
 
-    def division_games(self, division):
-        #TODO: organize this into rounds (4). Figure out formula to
-        #TODO: make division_teams iterable and get rid of game_x_variables
+    """Play four regional games, and return the winners from each.
+    Have those winners play a Final Four round, then a championship round.
+    """
+    def start(self):
+        self.division_champs["East"] = Regionals(self.teams, "East")\
+            .play_regionals()
+        self.division_champs["West"] = Regionals(self.teams, "West")\
+            .play_regionals()
+        self.division_champs["Midwest"] = Regionals(self.teams, "Midwest")\
+            .play_regionals()
+        self.division_champs["South"] = Regionals(self.teams, "South")\
+            .play_regionals()
+
+        Round.print_final_four_banner(
+            self.division_champs["East"], self.division_champs["West"])
+        east_west = Game(
+            self.division_champs["East"], self.division_champs["West"]).winner
+
+        Round.print_final_four_banner(
+            self.division_champs["Midwest"], self.division_champs["South"])
+        mw_south = Game(
+            self.division_champs["Midwest"], self.division_champs["South"]).winner
+
+        Round.print_championship(east_west, mw_south)
+        champ = Game(east_west, mw_south, True)
+        self.winner = champ
+
+
+class Regionals(object):
+    def __init__(self, all_teams, division):
+        self.winner = None
+        self.division = division
+        self.gameround = 1
+        self.teams = []
+        for team in all_teams:
+            if team.region == self.division:
+                self.teams.append(team)
+        self.teams.sort(key=lambda team: team.seed)
+
+    """Start with a seeded round, then iterate through normal elimination
+    rounds until one team is left.
+    """
+    def play_regionals(self):
+        print("\n\n")
         print("+" * 80)
-        print("%s DIVISION GAMES" % division.upper())
+        print("%s DIVISION GAMES" % self.division.upper())
         print("+" * 80)
         print("\n")
-        division_teams = []
-        for team in self.teams:
-            if team.region == division:
-                division_teams.append(team)
-        division_teams.sort(key=lambda team: team.seed)
+        round_winners = Round.seed_matched_round(self.teams)
+        self.gameround += 1
+        while len(round_winners) > 2:
+            round_winners = Round.successive_round(round_winners, self.gameround)
+            self.gameround += 1
+        else:
+            regional_champ = Round.successive_round(round_winners, self.gameround)
+            self.winner = regional_champ[0]
+            return self.winner
 
-        print(division_teams[0].name, division_teams[0].rating)
-        print(division_teams[-1].name, division_teams[-1].rating)
 
-        game_1_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_2_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_3_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_4_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_5_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_6_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_7_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        game_8_winner = Game(division_teams.pop(0), division_teams.pop(-1)).winner
-        print("\n" + "-" * 10 + "ROUND 2" + "-" * 10 + "\n")
-        game_9_winner = Game(game_1_winner, game_2_winner).winner
-        game_10_winner = Game(game_3_winner, game_4_winner).winner
-        game_11_winner = Game(game_5_winner, game_6_winner).winner
-        game_12_winner = Game(game_7_winner, game_8_winner).winner
-        print("\n" + "-" * 10 + "ROUND 3" + "-" * 10 + "\n")
-        game_13_winner = Game(game_9_winner, game_10_winner).winner
-        game_14_winner = Game(game_11_winner, game_12_winner).winner
-        print("\n" + "-" * 10 + "ROUND 4: Division Title" + "-" * 10 + "\n")
-        game_15_winner = Game(game_13_winner, game_14_winner).winner
-        print("And the %s Division winner is %s\n" %
-              (division, game_15_winner.name))
-        return game_15_winner
+class Round:
 
-    def final_four(self, ff):
+    @staticmethod
+    def print_round(no):
+        print("\n" + "-" * 10 + "ROUND %d" % no + "-" * 10 + "\n")
+
+    @staticmethod
+    def print_final_four_banner(team1, team2):
         print("+" * 80)
-        print("EAST VS. WEST")
+        print("%s VS. %s" % (team1.region.upper(), team2.region.upper()))
         print("+" * 80)
         print("\n")
-        east_west_winner = Game(ff["East"], ff["West"]).winner
-        print("+" * 80)
-        print("MIDWEST VS. SOUTH")
-        print("+" * 80)
-        print("\n")
-        midwest_south_winner = Game(ff["Midwest"], ff["South"]).winner
-        nationals = (east_west_winner, midwest_south_winner)
-        return nationals
 
-    def championship(self, final_two):
+    @staticmethod
+    def print_championship(team1, team2):
         print("+" * 80)
-        print("CHAMPIONSHIP MATCHUP")
+        print("CHAMPIONSHIP MATCHUP: %s vs. %s" % (team1.name, team2.name))
         print("+" * 80)
         print("\n")
-        champ = Game(final_two[0], final_two[1])
-        score = (71, 65)
-        print("Projected score for the championship is %d - %d" % (score[0], score[1]))
-        return champ
+
+    """Teams are matched by seed such that complements play each other. I.E.,
+    Seed 1 plays Seed 16, Seed 2 plays Seed 15, and so on.
+    This order takes place only in the first round, with all other rounds
+    matching adjacent teams, starting with the first two.
+    See successive_round() to match adjacent teams."""
+    @staticmethod
+    def seed_matched_round(seeded_teams, round_no=1):
+        Round.print_round(round_no)
+        seed_round_winners = []
+        for team in range(1, len(seeded_teams) // 2 + 1):
+            team1, team2 = seeded_teams.pop(0), seeded_teams.pop(-1)
+            game_winner = Game(team1, team2).winner
+            seed_round_winners.insert(team, game_winner)
+            print("\n")
+        return seed_round_winners
+
+    """This method should cover all succeeding rounds in the division games
+    It iterates through a list of teams, removing the first two in the list
+    and calling Game() on them. Game.winner is added to list round_winners.
+    """
+    @staticmethod
+    def successive_round(teams, round_no):
+        Round.print_round(round_no)
+        round_winners = []
+        for team in range(1, len(teams) // 2 + 1):
+            team1, team2 = teams.pop(0), teams.pop(0)
+            game_winner = Game(team1, team2).winner
+            round_winners.insert(team, game_winner)
+            print("\n")
+        return round_winners
+
