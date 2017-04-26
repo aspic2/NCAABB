@@ -1,7 +1,7 @@
 """Working app to pick winners for NCAA bracket. """
 
-from NCAABracketBuilder.Team import Team
-from NCAABracketBuilder.Tournament import Tournament
+from NCAABB.Team import Team
+from NCAABB.Tournament import Tournament
 import pypyodbc
 
 def main():

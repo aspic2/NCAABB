@@ -1,9 +1,9 @@
 # Scratch pad to test ideas and ensure stuff works
 
 
-from NCAABracketBuilder.Game import Game
-from NCAABracketBuilder.Team import Team
-from NCAABracketBuilder.Tournament import Tournament
+from NCAABB.Game import Game
+from NCAABB.Team import Team
+from NCAABB.Tournament import Tournament
 import pypyodbc
 
 
@@ -36,4 +36,3 @@ def testing():
 
 if __name__ == '__main__':
     testing()
-

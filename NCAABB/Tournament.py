@@ -1,7 +1,7 @@
 # Tournament class organizes all of the games and holds the winners for each
 # round.
 
-from NCAABracketBuilder.Game import Game
+from NCAABB.Game import Game
 
 
 class Tournament(object):
@@ -70,4 +70,3 @@ class Tournament(object):
         score = (71, 65)
         print("Projected score for the championship is %d - %d" % (score[0], score[1]))
         return champ
-
