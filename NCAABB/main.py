@@ -8,7 +8,7 @@ def main():
     some_teams = []
     # TODO: make second query for games database. retrieve info on last 12 games
     # TODO: and games against top 25 teams
-    connection = pypyodbc.win_connect_mdb("C:\\datadump\\NCAA_Database.mdb")
+    connection = pypyodbc.win_connect_mdb("C:\\datadump\\NCAABB\\NCAA_Database.mdb")
     query = 'SELECT Team, Region, Seed, Rank, Wins, GameCount FROM 2017TournamentTeams'
     retrieved = connection.cursor().execute(query)
     team_data = retrieved.fetchall()

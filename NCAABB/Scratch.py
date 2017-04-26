@@ -9,7 +9,7 @@ import pypyodbc
 
 def testing():
     some_teams = []
-    connection = pypyodbc.win_connect_mdb("C:\\Users\\mthompson\\Documents\\NCAA_Database.mdb")
+    connection = pypyodbc.win_connect_mdb("C:\\datadump\\NCAABB\\NCAA_Database.mdb")
     query = 'SELECT Team, Region, Seed, Rank, Wins, GameCount FROM 2017TournamentTeams'
     retrieved = connection.cursor().execute(query)
     team_data = retrieved.fetchall()

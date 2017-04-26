@@ -90,3 +90,4 @@ ENV/
 
 # other folders
 clutter/
+.idea
