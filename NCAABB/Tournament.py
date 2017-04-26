@@ -19,31 +19,22 @@ class Tournament(object):
     def __init__(self, teams):
         self.winner = None
         self.teams = teams
-        self.division_champs = {}
-        self.final_four = []
+        self.ff = {}
 
     """Play four regional games, and return the winners from each.
     Have those winners play a Final Four round, then a championship round.
     """
     def start(self):
-        self.division_champs["East"] = Regionals(self.teams, "East")\
-            .play_regionals()
-        self.division_champs["West"] = Regionals(self.teams, "West")\
-            .play_regionals()
-        self.division_champs["Midwest"] = Regionals(self.teams, "Midwest")\
-            .play_regionals()
-        self.division_champs["South"] = Regionals(self.teams, "South")\
-            .play_regionals()
+        self.ff["East"] = Regionals(self.teams, "East").play_regionals()
+        self.ff["West"] = Regionals(self.teams, "West").play_regionals()
+        self.ff["Midwest"] = Regionals(self.teams, "Midwest").play_regionals()
+        self.ff["South"] = Regionals(self.teams, "South").play_regionals()
 
-        Round.print_final_four_banner(
-            self.division_champs["East"], self.division_champs["West"])
-        east_west = Game(
-            self.division_champs["East"], self.division_champs["West"]).winner
+        Round.print_final_four_banner(self.ff["East"], self.ff["West"])
+        east_west = Game(self.ff["East"], self.ff["West"]).winner
 
-        Round.print_final_four_banner(
-            self.division_champs["Midwest"], self.division_champs["South"])
-        mw_south = Game(
-            self.division_champs["Midwest"], self.division_champs["South"]).winner
+        Round.print_final_four_banner(self.ff["Midwest"], self.ff["South"])
+        mw_south = Game(self.ff["Midwest"], self.ff["South"]).winner
 
         Round.print_championship(east_west, mw_south)
         champ = Game(east_west, mw_south, True)

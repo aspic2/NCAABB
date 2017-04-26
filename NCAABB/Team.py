@@ -1,6 +1,3 @@
-# class to assemble team objects. They hold identification info for each team
-# and all stats that will be used to evaluate the winners for each game.
-#
 # TODO: Figure out proper weights for various stats.
 # TODO: Add other values besides winning percentage
 
@@ -32,7 +29,6 @@ class Team(object):
     def calculate_rating(self, stats):
         self.rating = 0.8 * stats  # make this self.win_percentage for now
         return self.rating
-
 
 
 class Data(object):

@@ -9,7 +9,6 @@ from NCAABB.Tournament import Tournament
 def main():
 
     all_teams = Data.get_teams()
-
     t2017 = Tournament(all_teams)
     t2017.start()
 

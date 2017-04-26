@@ -1,14 +1,10 @@
-# Class for each individual game in the tournament. Should evaluate teams and
-# return a winner (team object).
-# First round of games and last round are slightly different.
-#   First games have predetermined teams based on seed (1-16).
-#   Last game returns winner and score.
-
 """Game class compares two teams ratings to determine which team is better.
-Better team is declared as winner and returned.
+The higher rated team is declared as winner and returned.
 Scoring property also prints a projected score for the game.
 Scoring defaults to False, as it is only used for the championship game.
 """
+
+
 class Game(object):
     # TODO: refactor scoring to use season's scores for teams and historical
     # TODO: scores for matchups between these two teams
