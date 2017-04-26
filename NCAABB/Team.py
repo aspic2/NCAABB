@@ -1,8 +1,13 @@
 # class to assemble team objects. They hold identification info for each team
 # and all stats that will be used to evaluate the winners for each game.
 #
-"""TODO: Figure out proper weights for various stats.
-TODO: Add other values besides winning percentage
+# TODO: Figure out proper weights for various stats.
+# TODO: Add other values besides winning percentage
+
+import pypyodbc
+
+"""Team class holds team identifying info and calculates the team's rating.
+self.rating is used to determine winners in Game().
 """
 
 
@@ -30,3 +35,18 @@ class Team(object):
 
 
 
+class Data(object):
+    # TODO: make second query for games database. retrieve info on last 12 games
+    # TODO: and games against top 25 teams
+
+    @staticmethod
+    def get_teams():
+        teams = []
+        connection = pypyodbc.win_connect_mdb("C:\\datadump\\NCAABB\\NCAA_Database.mdb")
+        query = 'SELECT Team, Region, Seed, Rank, Wins, GameCount FROM 2017TournamentTeams'
+        retrieved = connection.cursor().execute(query)
+        team_data = retrieved.fetchall()
+        for x in team_data:
+            teams.append(Team(x))
+        connection.close()
+        return teams
