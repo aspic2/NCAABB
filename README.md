@@ -12,8 +12,8 @@ BB will eventually be revised to use any of the stats that ESPN includes with th
 
 ### How do I get set up? ###
 
-BB is written in Python 3 and requires the following packages to run:
-	- pypyodbc (for database calls)
+BB is written in Python 3 and requires the following packages to run:  
+- pypyodbc (for database calls)
 
 
 ### Licence ###
