@@ -91,3 +91,4 @@ ENV/
 # other folders
 clutter/
 .idea
+.DS_Store
