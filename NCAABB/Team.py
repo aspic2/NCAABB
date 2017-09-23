@@ -46,8 +46,7 @@ class Data:
     work in bulk (you pass in a list of teams to get data, rather than getting data
     for each individual team).
     """
-    #This may need to be changed for macOS and Linux
-    source = getcwd() + "\\NCAA_Database.mdb"
+    source = getcwd() + "/NCAA_Database.mdb"
 
     @staticmethod
     def get_teams():
@@ -106,4 +105,3 @@ class Data:
                 top_25_wins += game[2]
             x.t25_wins = top_25_wins
         stream.close()
-
