@@ -46,7 +46,7 @@ class Data:
     work in bulk (you pass in a list of teams to get data, rather than getting data
     for each individual team).
     """
-    source = getcwd() + "/NCAA_Database.mdb"
+    
     newdb = 'NCAA_Database.db'
 
     @staticmethod
