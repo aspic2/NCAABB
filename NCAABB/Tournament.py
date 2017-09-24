@@ -127,4 +127,3 @@ class Round:
         print("CHAMPIONSHIP MATCHUP: %s vs. %s" % (team1.name, team2.name))
         print("+" * 80)
         print("\n")
-

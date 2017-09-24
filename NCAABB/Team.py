@@ -2,7 +2,7 @@
 #TODO: work on encapsulation for Team objects. Data methods should simply
 #TODO: retrieve data for Team, not alter objects in Team.
 
-import pypyodbc
+import sqlite3
 from os import getcwd
 
 
@@ -47,14 +47,15 @@ class Data:
     for each individual team).
     """
     source = getcwd() + "/NCAA_Database.mdb"
+    newdb = 'NCAA_Database.db'
 
     @staticmethod
     def get_teams():
         #TODO: You made 3 instances of connection/stream in 3 different methods.
         #TODO: consider making one instance and passing it into the Data methods.
         teams = []
-        connection = pypyodbc.win_connect_mdb(Data.source)
-        query = 'SELECT Team, Region, Seed, Rank, Wins, GameCount FROM 2017TournamentTeams'
+        connection = sqlite3.connect(Data.newdb)
+        query = '''SELECT Team, Region, Seed, Rank, Wins, GameCount FROM "2017TournamentTeams"'''
         retrieved = connection.cursor().execute(query)
         team_data = retrieved.fetchall()
         for x in team_data:
@@ -66,9 +67,9 @@ class Data:
 
     @staticmethod
     def get_last_12_games_stats(teams):
-        connection = pypyodbc.win_connect_mdb(Data.source)
-        query = 'SELECT Team, Date, Opponent, Win FROM "2016-2017GameResults"' \
-                'WHERE Team IN (Select Team FROM 2017TournamentTeams)' \
+        connection = sqlite3.connect(Data.newdb)
+        query = 'SELECT Team, Date, Opponent, Win FROM "2016to2017Games"' \
+                'WHERE Team IN (Select Team FROM "2017TournamentTeams")' \
                 'ORDER BY Date'
         retrieved = connection.cursor().execute(query)
         game_stats = retrieved.fetchall()
@@ -86,10 +87,10 @@ class Data:
 
     @staticmethod
     def get_top_25_stats(teams):
-        stream = pypyodbc.win_connect_mdb(Data.source)
-        query = 'SELECT Team, Opponent, Win FROM "2016-2017GameResults"' \
-                'WHERE Team IN (Select Team FROM 2017TournamentTeams)' \
-                'AND Opponent IN (Select Team From 2017TournamentTeams WHERE ID <= 25)' \
+        stream = sqlite3.connect(Data.newdb)
+        query = 'SELECT Team, Opponent, Win FROM "2016to2017Games"' \
+                'WHERE Team IN (Select Team FROM "2017TournamentTeams")' \
+                'AND Opponent IN (Select Team From "2017TournamentTeams" WHERE ID <= 25)' \
                 'ORDER BY Date'
         retrieved = stream.cursor().execute(query)
         game_stats = retrieved.fetchall()

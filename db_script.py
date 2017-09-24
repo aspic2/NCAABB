@@ -37,5 +37,5 @@ def insert_data(source):
     conn.close()
 
 if __name__ == '__main__':
-    #create_table(teams_header)
+    create_table(teams_header)
     insert_data(teams_csv)
