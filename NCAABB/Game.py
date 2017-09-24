@@ -1,5 +1,7 @@
 #TODO: Add support for scoring module
 
+import random
+
 class Game(object):
     """Game class compares two teams ratings to determine which team is better.
     The higher rated team is declared as winner and returned.
@@ -18,8 +20,10 @@ class Game(object):
     def play(self):
         if self.team1.rating > self.team2.rating:
             self.winner = self.team1
-        else:
+        elif self.team1.rating < self.team2.rating:
             self.winner = self.team2
+        else:
+            self.winner = random.choice([self.team1, self.team2])
 
         print("%s\n\t >  %s\n%s\n" %
               (self.team1.name, self.winner.name, self.team2.name))
@@ -27,9 +31,3 @@ class Game(object):
             score = (71, 65)
             print("Projected score: %d - %d" % (score[0], score[1]))
         return self.winner
-
-
-
-
-
-
