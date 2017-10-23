@@ -37,7 +37,7 @@ class Tournament(object):
         mw_south = Game(self.ff["Midwest"], self.ff["South"]).winner
 
         Round.print_championship(east_west, mw_south)
-        champ = Game(east_west, mw_south, True)
+        champ = Game(east_west, mw_south, True).score_game()
         self.winner = champ
 
 

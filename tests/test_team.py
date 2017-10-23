@@ -14,7 +14,11 @@ class TestTeam(unittest.TestCase):
 
     def test_get_scores(self):
         ucla = Team.Team(["UCLA", "Region", 1, True, 30, 30])
-        self.assertIsNotNone(ucla.get_scores())
+        #TODO: .get_scores() looks in wrong directory for the database
+        ucla.get_scores()
+        self.assertTrue(ucla.points_scored, "Error getting points scored")
+        self.assertTrue(ucla.points_allowed, "Error getting points allowed")
+
 
 
 if __name__ == '__main__':

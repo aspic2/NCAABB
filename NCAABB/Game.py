@@ -3,6 +3,7 @@
 import random
 import statistics
 
+
 class Game(object):
     """Game class compares two teams ratings to determine which team is better.
     The higher rated team is declared as winner and returned.
@@ -30,12 +31,14 @@ class Game(object):
 
         print("%s\n\t >  %s\n%s\n" %
               (self.team1.name, self.winner.name, self.team2.name))
-        if self.scoring:
-            score = (71, 65)
-            print("Projected score: %d - %d" % (score[0], score[1]))
         return self
 
     def score_game(self):
-        self.team1_score = round(statistics.mean([15, 5]))
-        self.team2_score = round(statistics.mean([10, 10]))
+        self.team1.get_scores()
+        self.team2.get_scores()
+        # assumes team will score the mean of their seasonal points per game
+        self.team1_score = round(statistics.mean(self.team1.points_scored))
+        self.team2_score = round(statistics.mean(self.team2.points_scored))
+        print("Projected score: %s: %d  -  %s: %d" % (
+            self.team1.name, self.team1_score, self.team2.name, self.team2_score))
         return self

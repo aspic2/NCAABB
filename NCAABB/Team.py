@@ -27,8 +27,8 @@ class Team(object):
         self.t25_games = 0
         self.t25_wins = 0
         self.rating = 0
-        self.points_scored = None
-        self.points_allowed = None
+        self.points_scored = []
+        self.points_allowed = []
 
     def calculate_rating(self):
         """The coefficients were more art than science. More guessing than art.
@@ -45,15 +45,20 @@ class Team(object):
     def get_scores(self):
         scored = []
         allowed = []
+        # TODO: This command is not looking in the right directory for the database
         connection = sqlite3.connect(Data.newdb)
-        query = (('SELECT Team_Score, Opponent_Score FROM "2016to2017Games"'
-                 'WHERE Team IS UCLA'))
-        retrieved = connection.cursor().execute(query)
+        query = 'SELECT Team_Score, Opponent_Score FROM "2016to2017Games"' \
+                'WHERE Team=?'\
+                'ORDER BY Date'
+        # binding must be a tuple. See https://docs.python.org/3.6/library/sqlite3.html
+        retrieved = connection.cursor().execute(query, (self.name,))
         score_data = retrieved.fetchall()
         for team_score, opponent_score in score_data:
             scored.append(team_score)
             allowed.append(opponent_score)
         connection.close()
+        self.points_scored = scored
+        self.points_allowed = allowed
         return self
 
 
@@ -72,7 +77,7 @@ class Data:
         #TODO: consider making one instance and passing it into the Data methods.
         teams = []
         connection = sqlite3.connect(Data.newdb)
-        query = '''SELECT Team, Date, Opponent, Win FROM "2016to2017Games"'''
+        query = '''SELECT Team, Region, Seed, Rank, Wins, GameCount FROM "2017TournamentTeams"'''
         retrieved = connection.cursor().execute(query)
         team_data = retrieved.fetchall()
         for x in team_data:
