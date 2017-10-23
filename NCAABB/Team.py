@@ -27,6 +27,8 @@ class Team(object):
         self.t25_games = 0
         self.t25_wins = 0
         self.rating = 0
+        self.points_scored = None
+        self.points_allowed = None
 
     def calculate_rating(self):
         """The coefficients were more art than science. More guessing than art.
@@ -39,6 +41,21 @@ class Team(object):
         self.rating = self.t25_games * PLAY_T25 + self.t25_wins*WIN_T25 + \
             self.p12_wins*WIN_L12 + self.win_percentage * PERCENT
         return self.rating
+
+    def get_scores(self):
+        scored = []
+        allowed = []
+        connection = sqlite3.connect(Data.newdb)
+        query = (('SELECT Team_Score, Opponent_Score FROM "2016to2017Games"'
+                 'WHERE Team IS UCLA'))
+        retrieved = connection.cursor().execute(query)
+        score_data = retrieved.fetchall()
+        for team_score, opponent_score in score_data:
+            scored.append(team_score)
+            allowed.append(opponent_score)
+        connection.close()
+        return self
+
 
 
 class Data:
@@ -55,7 +72,7 @@ class Data:
         #TODO: consider making one instance and passing it into the Data methods.
         teams = []
         connection = sqlite3.connect(Data.newdb)
-        query = '''SELECT Team, Region, Seed, Rank, Wins, GameCount FROM "2017TournamentTeams"'''
+        query = '''SELECT Team, Date, Opponent, Win FROM "2016to2017Games"'''
         retrieved = connection.cursor().execute(query)
         team_data = retrieved.fetchall()
         for x in team_data:
