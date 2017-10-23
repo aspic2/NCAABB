@@ -1,6 +1,7 @@
 #TODO: Add support for scoring module
 
 import random
+import statistics
 
 class Game(object):
     """Game class compares two teams ratings to determine which team is better.
@@ -15,6 +16,8 @@ class Game(object):
         self.team2 = team2
         self.winner = None
         self.scoring = scoring
+        self.team1_score = None
+        self.team2_score = None
         self.play()
 
     def play(self):
@@ -30,4 +33,9 @@ class Game(object):
         if self.scoring:
             score = (71, 65)
             print("Projected score: %d - %d" % (score[0], score[1]))
-        return self.winner
+        return self
+
+    def score_game(self):
+        self.team1_score = round(statistics.mean([15, 5]))
+        self.team2_score = round(statistics.mean([10, 10]))
+        return self
