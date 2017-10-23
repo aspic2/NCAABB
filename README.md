@@ -12,6 +12,8 @@ BB ranks teams by using four weighted parameters:
 
 BB will eventually be revised to use any of the stats that ESPN includes with their online bracket. Users will be able to weight the information however they choose, although there will be default settings if no input if given.
 
+Scoring logic is now working!
+
 ### How do I get set up? ###
 
 BB is written in Python 3. Thanks to a recent Database update, no 3rd party packages are required.
