@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello from Flask</title>
+  </head>
+  <body>
+    {% if teams %}
+    <h1>I got Teams! {{ teams[0].name }}!</h1>
+    <ol>
+    {% for t in teams %}
+      <li>{{ t.name }}</li>
+    </ol>
+    {% endfor %}
+    {% else %}
+      <h1>Hello, World!</h1>
+    {% endif %}
+  </body>
+</html>

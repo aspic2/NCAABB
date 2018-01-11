@@ -6,8 +6,6 @@ import sqlite3
 from os import getcwd
 
 
-
-
 class Team(object):
     """Team class holds team identifying info and calculates the team's rating.
     self.rating is used to determine winners in Game().
@@ -68,7 +66,7 @@ class Data:
     work in bulk (you pass in a list of teams to get data, rather than getting data
     for each individual team).
     """
-    
+
     newdb = 'NCAA_Database.db'
 
     @staticmethod
