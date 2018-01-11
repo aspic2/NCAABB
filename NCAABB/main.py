@@ -5,6 +5,8 @@ teams only. Will add functionality to predict between any two teams in future.
 from Team import Data
 from Tournament import Tournament
 
+from flask import Flask
+
 
 def main():
 
@@ -15,6 +17,11 @@ def main():
     t2017 = Tournament(all_teams)
     t2017.start()
 
+app = Flask(__name__)
+@app.route("/")
+def root_route():
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
-    main()
+    #main()
