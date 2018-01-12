@@ -1,3 +1,13 @@
+# NEXT STEPS
+Flask version of program can run from app.py. Need to refactor program to
+work through Flask app.
+
+1. Build original functionality into Flask version
+2. User input for four weighted parameters.
+3. More parameter options?
+4. Team vs. Team faceoff options
+5. Make it look pretty
+
 # NCAA B[racket]B[uilder] #
 
 BracketBuilder (BB) is a tool built to help you assemble your NCAA Tournament Challenge Bracket this March. It uses information related to each team's performance to determine who will win each round. Support for individualized stats preferences will be added in the future, but for now the primary weight is placed on wins and losses.
@@ -16,8 +26,8 @@ Scoring logic is now working!
 
 ### How do I get set up? ###
 
-BB is written in Python 3. Thanks to a recent Database update, no 3rd party packages are required.
+Python 3 and Flask are all you need.
 
 
-### Licence ###
+### License ###
 MIT License and all that comes with that.
