@@ -19,7 +19,20 @@ class Tournament(object):
     def __init__(self, teams):
         self.winner = None
         self.teams = teams
+        self.team_dict = {}
         self.ff = {}
+
+    def make_team_dict(self):
+        for t in self.teams:
+            self.team_dict[t.name] = t
+        return self
+
+    def find_team(self, team):
+        """Build in error handling for bad searches"""
+        if team in self.team_dict:
+            return self.team_dict[team]
+        else:
+            return "No such team"
 
     def start(self):
         """Play four regional games, and return the winners from each.

@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 import Team
 import Tournament
-from main import main as m
+
+tourney = Tournament.Tournament(Team.Data.get_teams()).make_team_dict()
 
 app = Flask(__name__)
 @app.route("/")
@@ -10,15 +11,20 @@ def root_route():
 
 @app.route("/bb")
 def bb_route():
-    return render_template("teams.html", teams=Team.Data.get_teams())
+    return render_template("teams.html", teams=tourney.teams)
 
 @app.route("/bb/<team>")
 def show_route(team):
-    return render_template("show.html", team=Team.Data.get_teams()[0])
+    return render_template("show.html", team=tourney.find_team(team.upper()))
+
+@app.route("/bb/faceoff/new")
+"""Create a template where user can select two teams to play each other"""
+def create_game():
+    return render_template("select.html")
 
 @app.route("/bb/winner")
 def winner_route():
-    return render_template("show.html", team=m())
+    return render_template("show.html", team=tourney.start())
 
 @app.route("/*")
 def not_found_route(team):
@@ -26,4 +32,4 @@ def not_found_route(team):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
