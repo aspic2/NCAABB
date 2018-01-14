@@ -14,6 +14,7 @@ def main():
         team.calculate_rating()
     t2017 = Tournament(all_teams)
     t2017.start()
+    return t2017.winner
 
 
 if __name__ == '__main__':
