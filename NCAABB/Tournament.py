@@ -52,6 +52,7 @@ class Tournament(object):
         Round.print_championship(east_west, mw_south)
         champ = Game(east_west, mw_south, True).score_game()
         self.winner = champ.winner
+        return self
 
 
 class Regionals(object):
