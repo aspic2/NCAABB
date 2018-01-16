@@ -1,11 +1,22 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bracket Builder</title>
-  </head>
-  <body>
+{% include '/partials/header.html' %}
     <h1>B[racket] B[uilder]</h1>
 
-  </body>
-</html>
+    <div class="container">
+      <p>Select a team to get some stats or click matchup to see the predicted game results</p>
+
+      <div class="input-group input-group-lg" id="teamSearchBar">
+        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+        <div class="input-group-append">
+          <button id="teamSearchButton" class="btn btn-outline-secondary" type="button">Team Search</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="" id="team1">
+          <h1>Team 1 goes here</h1>
+        </div>
+
+      </div>
+    </div>
+
+
+{% include 'partials/footer.html' %}

@@ -8,17 +8,17 @@ app = Flask(__name__)
 
 @app.route("/")
 def root_route():
-    return render_template('index.html')
+    return render_template('index.html', tourney=tourney)
 
-@app.route("/bb")
+@app.route("/bb/")
 def bb_route():
     return render_template("teams.html", teams=tourney.teams)
 
-@app.route("/bb/<team>")
+@app.route("/bb/<team>/")
 def show_route(team):
     return render_template("show.html", team=tourney.find_team(team.upper()))
 
-@app.route("/bb/faceoff/new")
+@app.route("/bb/faceoff/new/")
 def create_game():
     """Create a template where user can select two teams to play each other"""
     return render_template("select.html", tourney=tourney)
@@ -38,7 +38,7 @@ def play_game():
     return render_template("select.html", tourney=tourney)
 
 
-@app.route("/bb/winner")
+@app.route("/bb/winner/")
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
 

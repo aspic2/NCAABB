@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>{{ team.name }} Stats</title>
-  </head>
-  <body>
+{% include '/partials/header.html' %}
+
+<div class="container">
     <h1>{{ team.name }}</h1>
 
     <ul>
@@ -14,6 +10,6 @@
       <li>{{team.t25_wins}} for {{team.t25_games}} against top 25 teams</li>
       <li>{{team.wins}} wins out of {{team.total_games}} games</li>
     </ul>
-    
-  </body>
-</html>
+</div>
+
+{% include 'partials/footer.html' %}
