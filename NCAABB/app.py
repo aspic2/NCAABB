@@ -42,9 +42,10 @@ def play_game():
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
 
-@app.route("/*")
-def not_found_route(team):
-    return '404. PAGE NOT FOUND'
+@app.route("/", defaults={'path': ''})
+@app.route('/<path:path>')
+def not_found_route(path):
+    return redirect('/')
 
 
 if __name__ == '__main__':

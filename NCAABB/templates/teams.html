@@ -1,12 +1,14 @@
 {% include '/partials/header.html' %}
     {% if teams %}
-    <h1>I got Teams! {{ teams[0].name }}!</h1>
+    <h1>Your Teams</h1>
+    <p>Click a team to view more stats</p>
     <ol>
     {% for t in teams %}
-      <li>{{ t.name }}</li>
+      <li><a href="/bb/{{ t.name }}">{{ t.name }}</a></li>
     {% endfor %}
     </ol>
     {% else %}
-      <h1>Hello, World!</h1>
+      <h1>No Teams Loaded</h1>
+      <a href="/bb/faceoff/new">Start a new Matchup</a>
     {% endif %}
 {% include 'partials/footer.html' %}
