@@ -10,21 +10,20 @@ app = Flask(__name__)
 def root_route():
     return render_template('index.html', tourney=tourney)
 
-@app.route("/bb/")
+@app.route("/teams/")
 def bb_route():
     return render_template("teams.html", teams=tourney.teams)
 
-@app.route("/bb/<team>/")
+@app.route("/<team>/")
 def show_route(team):
     return render_template("show.html", team=tourney.find_team(team.upper()))
 
-@app.route("/bb/faceoff/new/")
+@app.route("/faceoff/new/")
 def create_game():
     """Create a template where user can select two teams to play each other"""
     return render_template("select.html", tourney=tourney)
 
-# TODO: WRITE WAY TO REDIRECT TO RESULTS PAGE
-@app.route("/bb/faceoff/", methods=["GET", "POST"])
+@app.route("/faceoff/", methods=["GET", "POST"])
 def play_game():
     """Create a template where user can select two teams to play each other"""
     if request.method == 'POST':
@@ -38,10 +37,10 @@ def play_game():
             game = game.score_game()
         return render_template("results.html", game=game)
     else:
-        return redirect('/bb/faceoff/new/')
+        return redirect('/faceoff/new/')
 
 
-@app.route("/bb/winner/")
+@app.route("/faceoff/winner/")
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
 

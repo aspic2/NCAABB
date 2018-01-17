@@ -5,12 +5,12 @@
           <h1 style="text-align:center;">Matchup</h1>
         </div>
       </div>
+      <form class="form" action="/faceoff/" method="post">
       <div class="row">
-        <div class="col-sm-12 col-lg-3">
-          <form class="form" action="/bb/faceoff/" method="post">
+        <div class="col">
             <div class="form-group">
               <label for="team1">Team 1</label>
-              <select class="" name="team1">
+              <select class="" name="team1" id="team1Select">
                 {% for team in tourney.teams %}
                 <option value="{{ team.name }}">{{ team.name }}
                 </option>
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
               <label for="team2">Team 2</label>
-              <select class="" name="team2">
+              <select class="" name="team2" id="team2Select">
                 {% for team in tourney.teams %}
                 <option value="{{ team.name }}">{{ team.name }}</option>
                 {% endfor %}
@@ -27,8 +27,8 @@
             </div>
             <input type="hidden" name="score" value="0">
             <button type="submit" name="button" class="btn btn-primary">Submit!</button>
-          </form>
         </div>
       </div>
+      </form>
     </div>
 {% include 'partials/footer.html' %}

@@ -1,15 +1,38 @@
 {% include '/partials/header.html' %}
-    <h2>{{ game.team1.name }}</h2>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+    <h1>Winner: <strong>{{game.winner.name}}</strong></h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h2>Score: {{game.team1.name}} = {{game.team1_score }} |
+      {{game.team2.name}} = {{game.team2_score }}</h2>
+    </div>
+  </div>
+
+  <div class="row">
+
+{% for team in [game.team1, game.team2] %}
+
+<div class="col-sm-6">
+    <h2>{{ team.name }}</h2>
 
     <ul>
-      <li> Region = {{game.team1.region}}</li>
-      <li>Seed = {{game.team1.seed}}</li>
-      <li>Games Against Top 25 Teams = {{game.team1.t25_wins}} for {{game.team1.t25_games}} </li>
-      <li>Past 12 Games = {{game.team1.p12_wins}} of 12 </li>
-      <li>Wins Overall = {{game.team1.wins}} out of {{game.team1.total_games}} Games</li>
-      <li>BB Score = {{ game.team1.rating }}</li>
+      <li> Region = {{team.region}}</li>
+      <li>Seed = {{team.seed}}</li>
+      <li>Against Top 25 Teams = {{team.t25_wins}} for {{team.t25_games}} </li>
+      <li>Past 12 Games = {{team.p12_wins}} of 12 </li>
+      <li>Wins Overall = {{team.wins}} of {{team.total_games}} Games</li>
+      <li>BB Score = {{ team.rating }}</li>
     </ul>
-
+</div>
+{% endfor %}
+</div>
+<!--
     <h2>{{ game.team2.name }}</h2>
     <ul>
       <li> Region = {{game.team2.region}}</li>
@@ -18,13 +41,13 @@
       <li>Past 12 Games = {{game.team2.p12_wins}} of 12 </li>
       <li>Wins Overall = {{game.team2.wins}} out of {{game.team2.total_games}} Games</li>
       <li>BB Score = {{ game.team2.rating }}</li>
-    </ul>
+    </ul> -->
 
-    <h1>Winner: <strong>{{game.winner.name}}</strong></h1>
-    <h2>Score: {{game.team1.name}} = {{game.team1_score }} |
-    {{game.team2.name}} = {{game.team2_score }}</h2>
 
-    <a href="/bb/faceoff/new">
+
+    <a href="/faceoff/new">
       <button type="button" name="button" class="btn btn-primary">Create a matchup!</button>
     </a>
+
+</div>
 {% include 'partials/footer.html' %}
