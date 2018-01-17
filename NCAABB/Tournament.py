@@ -33,7 +33,7 @@ class Tournament(object):
         if team in self.team_dict:
             return self.team_dict[team]
         else:
-            return "No such team"
+            return None
 
     def start(self):
         """Play four regional games, and return the winners from each.

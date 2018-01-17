@@ -1,19 +1,39 @@
 {% include '/partials/header.html' %}
 
 <div class="container">
-    <h1>{{ team.name }}</h1>
+  <div class="row">
+    <div class="col">
+      <h1>{{ team.name }}</h1>
+    </div>
 
-    <ul>
-      <li>{{ team.region }} Region</li>
-      <li>{{ team.seed }} seed</li>
-      <li>{{ team.p12_wins }} of 12 for past 12 games</li>
-      <li>{{ team.t25_wins }} for {{ team.t25_games }} against top 25 teams</li>
-      <li>{{ team.wins }} wins out of {{ team.total_games }} games</li>
-    </ul>
+  </div>
 
+  <div class="row">
+    <div class="col">
+      <ul>
+        <li>{{ team.region }} Region</li>
+        <li>{{ team.seed }} seed</li>
+        <li>{{ team.p12_wins }} of 12 for past 12 games</li>
+        <li>{{ team.t25_wins }} for {{ team.t25_games }} against top 25 teams</li>
+        <li>{{ team.wins }} wins out of {{ team.total_games }} games</li>
+      </ul>
+    </div>
+  </div>
+
+<div class="row">
+  <div class="col">
     <a href="/faceoff/new">
       <button type="button" name="button" class="btn btn-primary">Create a matchup!</button>
     </a>
+  </div>
+  <div class="col">
+    <a href="/teams/">
+      <button type="button" name="button" class="btn btn-primary">Back to Teams</button>
+    </a>
+  </div>
+</div>
+
+
 </div>
 
 {% include 'partials/footer.html' %}

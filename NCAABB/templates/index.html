@@ -4,11 +4,13 @@
     <div class="container">
       <p>Select a team to get some stats or click matchup to see the predicted game results</p>
 
+      <form class="" action="/teams/" method="get">
       <div class="input-group input-group-lg" id="teamSearchBar">
-        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Team Abbreviation, e.g., ND" name="team">
         <div class="input-group-append">
-          <button id="teamSearchButton" class="btn btn-outline-secondary" type="button">Team Search</button>
+          <button id="teamSearchButton" class="btn btn-primary" type="submit">Search Teams!</button>
         </div>
+      </form>
       </div>
       <div class="row">
         <div class="col sm-12" id="team1">

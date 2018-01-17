@@ -13,7 +13,7 @@
     <h2> {{ region }}</h2>
     <ol>
     {% for t in teams if t.region == region %}
-      <li><a href="/bb/{{ t.name }}">{{ t.name }}</a></li>
+      <li><a href="/teams/{{ t.name }}">{{ t.name }}</a></li>
     {% endfor %}
     </ol>
     </div>

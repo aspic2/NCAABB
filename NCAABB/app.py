@@ -12,11 +12,17 @@ def root_route():
 
 @app.route("/teams/")
 def bb_route():
+    if request.args:
+        url = "/teams/" + request.args.get('team')
+        return redirect(url)
     return render_template("teams.html", teams=tourney.teams)
 
-@app.route("/<team>/")
+@app.route("/teams/<team>/")
 def show_route(team):
-    return render_template("show.html", team=tourney.find_team(team.upper()))
+    if tourney.find_team(team):
+        return render_template("show.html", team=tourney.find_team(team.upper()))
+    else:
+        return redirect('/teams/')
 
 @app.route("/faceoff/new/")
 def create_game():
