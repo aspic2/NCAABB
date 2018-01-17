@@ -18,7 +18,6 @@ class Game(object):
         self.scoring = scoring
         self.team1_score = None
         self.team2_score = None
-        self.play()
 
     def play(self):
         if self.team1.rating > self.team2.rating:
@@ -33,13 +32,16 @@ class Game(object):
         return self
 
     def score_game(self):
-        #TODO: fix method so that loser cannot be predicted to score more points
-        # TODO than the winner
-        # assumes team will score the mean of their seasonal points per game
-        # TODO: refactor to take into account each team's points scored vs.
-        # TODO: points allowed by the other team for a more balanced prediction
-        self.team1_score = round(statistics.mean(self.team1.get_scores().points_scored))
-        self.team2_score = round(statistics.mean(self.team2.get_scores().points_scored))
+        """Winner's score is median of their season points scored.
+        loser's score is median of winner's points allowed.
+        """
+        # TODO: does this solve the 'loser scored more points' problem?
+        if self.winner == self.team1:
+            self.team1_score = round(statistics.median(self.team1.get_scores().points_scored))
+            self.team2_score = round(statistics.median(self.team1.points_allowed))
+        else:
+            self.team2_score = round(statistics.median(self.team2.get_scores().points_scored))
+            self.team1_score = round(statistics.median(self.team2.points_allowed))
         print("Projected score: %s: %d  -  %s: %d" % (
             self.team1.name, self.team1_score, self.team2.name, self.team2_score))
         return self

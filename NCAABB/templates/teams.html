@@ -1,14 +1,31 @@
 {% include '/partials/header.html' %}
+<div class="container">
+
     {% if teams %}
+
     <h1>Your Teams</h1>
-    <p>Click a team to view more stats</p>
+    <p>Click a team to view more stats. Teams ordered by seed.</p>
+    <div class="row">
+
+    {% for region in ['East', 'West', 'Midwest', 'South'] %}
+
+    <div class="col-lg-3 col-sm-6">
+    <h2> {{ region }}</h2>
     <ol>
-    {% for t in teams %}
+    {% for t in teams if t.region == region %}
       <li><a href="/bb/{{ t.name }}">{{ t.name }}</a></li>
     {% endfor %}
     </ol>
+    </div>
+    {% endfor %}
+
+    </div>
     {% else %}
       <h1>No Teams Loaded</h1>
-      <a href="/bb/faceoff/new">Start a new Matchup</a>
     {% endif %}
+    <a href="/bb/faceoff/new">
+      <button type="button" name="button" class="btn btn-primary">Start a new matchup!</button>
+    </a>
+
+</div>
 {% include 'partials/footer.html' %}

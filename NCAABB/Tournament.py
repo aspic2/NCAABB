@@ -18,9 +18,10 @@ from Game import Game
 class Tournament(object):
     def __init__(self, teams):
         self.winner = None
-        self.teams = teams
+        self.teams = sorted(teams, key=lambda x: x.seed)
         self.team_dict = {}
         self.ff = {}
+        self.regions = set()
 
     def make_team_dict(self):
         for t in self.teams:
@@ -38,19 +39,20 @@ class Tournament(object):
         """Play four regional games, and return the winners from each.
         Have those winners play a Final Four round, then a championship round.
         """
+        self.regions = set(team.region for team in self.teams)
         self.ff["East"] = Regionals(self.teams, "East").play_regionals()
         self.ff["West"] = Regionals(self.teams, "West").play_regionals()
         self.ff["Midwest"] = Regionals(self.teams, "Midwest").play_regionals()
         self.ff["South"] = Regionals(self.teams, "South").play_regionals()
 
         Round.print_final_four_banner(self.ff["East"], self.ff["West"])
-        east_west = Game(self.ff["East"], self.ff["West"]).winner
+        east_west = Game(self.ff["East"], self.ff["West"]).play().winner
 
         Round.print_final_four_banner(self.ff["Midwest"], self.ff["South"])
-        mw_south = Game(self.ff["Midwest"], self.ff["South"]).winner
+        mw_south = Game(self.ff["Midwest"], self.ff["South"]).play().winner
 
         Round.print_championship(east_west, mw_south)
-        champ = Game(east_west, mw_south, True).score_game()
+        champ = Game(east_west, mw_south, True).play().score_game()
         self.winner = champ.winner
         return self
 
@@ -102,7 +104,7 @@ class Round:
         seed_round_winners = []
         for team in range(1, len(seeded_teams) // 2 + 1):
             team1, team2 = seeded_teams.pop(0), seeded_teams.pop(-1)
-            game_winner = Game(team1, team2).winner
+            game_winner = Game(team1, team2).play().winner
             seed_round_winners.insert(team, game_winner)
             print("\n")
         return seed_round_winners
@@ -118,7 +120,7 @@ class Round:
         round_winners = []
         for team in range(1, len(teams) // 2 + 1):
             team1, team2 = teams.pop(0), teams.pop(-1)
-            game_winner = Game(team1, team2).winner
+            game_winner = Game(team1, team2).play().winner
             round_winners.insert(team, game_winner)
             print("\n")
         return round_winners

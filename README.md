@@ -35,3 +35,12 @@ The command line version will be phased out soon.
 4. Sanitize user inputs
 5. More parameter options?
 6. Make it look pretty
+
+
+## Use Cases
+ - Build a March Madness Bracket
+   - ~As a bracket builder, I want to pick two teams to play head to head and see
+   who is more likely to win.~
+   - '' '' '' I want to adjust the weight of stats to fit my own heuristics
+   - '' '' '' I want to work out entire Division brackets at once
+   - ~'' '' '' I want to score the last game~

@@ -28,17 +28,16 @@ class Team(object):
         self.points_scored = []
         self.points_allowed = []
 
-    def calculate_rating(self):
-        """The coefficients were more art than science. More guessing than art.
-        Default vals: 1, 5, 2, and 100, respectively.
-        """
-        PLAY_T25 = 1
-        WIN_T25 = 5
-        WIN_L12 = 2
-        PERCENT = 100
-        self.rating = self.t25_games * PLAY_T25 + self.t25_wins*WIN_T25 + \
-            self.p12_wins*WIN_L12 + self.win_percentage * PERCENT
-        return self.rating
+    def calculate_rating(self, coefficients):
+        """Add together the calculations from here to come up with a positive
+        number. See Coefficents() for more info."""
+        PLAY_T25 = coefficients.PLAY_T25
+        WIN_T25 = coefficients.WIN_T25
+        WIN_L12 = coefficients.WIN_L12
+        PERCENT = coefficients.PERCENT
+        self.rating = round(self.t25_games * PLAY_T25 + self.t25_wins*WIN_T25 + \
+            self.p12_wins*WIN_L12 + self.win_percentage * PERCENT, 2)
+        return self
 
     def get_scores(self):
         scored = []
@@ -126,3 +125,15 @@ class Data:
                 top_25_wins += game[2]
             x.t25_wins = top_25_wins
         stream.close()
+
+
+class Coefficients(object):
+
+    def __init__(self, PLAY_T25=1, WIN_T25=5, WIN_L12=2, PERCENT=100):
+        """The coefficients were more art than science. More guessing than art.
+        Default vals: 1, 5, 2, and 100, respectively.
+        """
+        self.PLAY_T25 = PLAY_T25
+        self.WIN_T25 = WIN_T25
+        self.WIN_L12 = WIN_L12
+        self.PERCENT = PERCENT
