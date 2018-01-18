@@ -29,17 +29,20 @@ def create_game():
     """Create a template where user can select two teams to play each other"""
     return render_template("select.html", tourney=tourney)
 
-@app.route("/faceoff/", methods=["GET", "POST"])
+@app.route("/faceoff/")
 def play_game():
     """Create a template where user can select two teams to play each other"""
-    if request.method == 'POST':
+    team1 = None
+    team2 = None
+    if request.args:
         # TODO: catch bad values somewhere in here!
-        team1 = tourney.find_team(request.form['team1'])
-        team2 = tourney.find_team(request.form['team2'])
+        team1 = tourney.find_team(request.args.get('team1'))
+        team2 = tourney.find_team(request.args.get('team2'))
+    if team1 and team2:
         coef = Team.Coefficients()
         game = Tournament.Game(
                 team1.calculate_rating(coef), team2.calculate_rating(coef)).play()
-        if request.form['score']:
+        if request.args.get('score'):
             game = game.score_game()
         return render_template("results.html", game=game)
     else:

@@ -4,7 +4,7 @@
 
   <div class="row">
     <div class="col">
-    <h1>Winner: <strong>{{game.winner.name}}</strong></h1>
+      <h1>Winner: <strong>{{game.winner.name}}</strong></h1>
     </div>
   </div>
   <div class="row">
@@ -16,38 +16,24 @@
 
   <div class="row">
 
-{% for team in [game.team1, game.team2] %}
+    {% for team in [game.team1, game.team2] %}
 
-<div class="col-sm-6">
-    <h2>{{ team.name }}</h2>
+    <div class="col-sm-6">
+      <h2>{{ team.name }}</h2>
 
-    <ul>
-      <li> Region = {{team.region}}</li>
-      <li>Seed = {{team.seed}}</li>
-      <li>Against Top 25 Teams = {{team.t25_wins}} for {{team.t25_games}} </li>
-      <li>Past 12 Games = {{team.p12_wins}} of 12 </li>
-      <li>Wins Overall = {{team.wins}} of {{team.total_games}} Games</li>
-      <li>BB Score = {{ team.rating }}</li>
-    </ul>
-</div>
-{% endfor %}
-</div>
-<!--
-    <h2>{{ game.team2.name }}</h2>
-    <ul>
-      <li> Region = {{game.team2.region}}</li>
-      <li>Seed = {{game.team2.seed}}</li>
-      <li>Games Against Top 25 Teams = {{game.team2.t25_wins}} for {{game.team2.t25_games}} </li>
-      <li>Past 12 Games = {{game.team2.p12_wins}} of 12 </li>
-      <li>Wins Overall = {{game.team2.wins}} out of {{game.team2.total_games}} Games</li>
-      <li>BB Score = {{ game.team2.rating }}</li>
-    </ul> -->
-
-
-
-    <a href="/faceoff/new">
-      <button type="button" name="button" class="btn btn-primary">Create a matchup!</button>
+      <ul>
+        <li> Region = {{team.region}}</li>
+        <li>Seed = {{team.seed}}</li>
+        <li>Against Top 25 Teams = {{team.t25_wins}} for {{team.t25_games}} </li>
+        <li>Past 12 Games = {{team.p12_wins}} of 12 </li>
+        <li>Wins Overall = {{team.wins}} of {{team.total_games}} Games</li>
+        <li>BB Score = {{ team.rating }}</li>
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+  <a href="/faceoff/new">
+      <button type="button" name="button" class="btn btn-primary">Create a New Matchup!</button>
     </a>
-
 </div>
 {% include 'partials/footer.html' %}

@@ -1,34 +1,45 @@
 {% include '/partials/header.html' %}
-    <div class="container" id="main">
-      <div class="row">
-        <div class="col-sm-12">
-          <h1 style="text-align:center;">Matchup</h1>
-        </div>
-      </div>
-      <form class="form" action="/faceoff/" method="post">
-      <div class="row">
-        <div class="col">
-            <div class="form-group">
-              <label for="team1">Team 1</label>
-              <select class="" name="team1" id="team1Select">
+<div class="container" id="main">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 style="text-align:center;">Matchup</h1>
+    </div>
+  </div>
+  <form class="form" action="/faceoff/" method="GET">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="team1">Team 1</label>
+            </div>
+            <select class="custom-select" name="team1" id="team1Select">
                 {% for team in tourney.teams %}
-                <option value="{{ team.name }}">{{ team.name }}
+                <option value="{{ team.name }}">{{team.name}}
+                  - {{team.region}} - Seed {{team.seed}}
                 </option>
                 {% endfor %}
               </select>
-            </div>
-            <div class="form-group">
-              <label for="team2">Team 2</label>
-              <select class="" name="team2" id="team2Select">
-                {% for team in tourney.teams %}
-                <option value="{{ team.name }}">{{ team.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <input type="hidden" name="score" value="0">
-            <button type="submit" name="button" class="btn btn-primary">Submit!</button>
+          </div>
         </div>
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="team2">Team 2</label>
+            </div>
+            <select class="custom-select" name="team2" id="team2Select">
+                  {% for team in tourney.teams %}
+                  <option value="{{ team.name }}">{{team.name}}
+                    - {{team.region}} - Seed {{team.seed}}
+                  </option>
+                  {% endfor %}
+                </select>
+          </div>
+        </div>
+        <input type="hidden" name="score" value="0">
+        <button type="submit" class="btn btn-primary">Submit!</button>
       </div>
-      </form>
     </div>
+  </form>
+</div>
 {% include 'partials/footer.html' %}
