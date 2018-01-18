@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, jsonify
 import Team
 import Tournament
 
@@ -13,7 +13,7 @@ def root_route():
 @app.route("/teams/")
 def bb_route():
     if request.args:
-        url = "/teams/" + request.args.get('team')
+        url = "/teams/" + request.args.get('team').upper()
         return redirect(url)
     return render_template("teams.html", teams=tourney.teams)
 
@@ -49,6 +49,16 @@ def play_game():
 @app.route("/faceoff/winner/")
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
+
+@app.route('/teams/_get/')
+def get_teams():
+    query = request.args.get('query')
+    """ajax method to return team names"""
+    if query:
+        length = len(query)
+    keys = [x for x in tourney.team_dict.keys()]
+    print(keys)
+    return jsonify([x for x in keys if x[0: length] == query])
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')

@@ -28,13 +28,12 @@ MIT License and all that comes with that.
 This tool is still in development.
 The command line version will be phased out soon.
 
-1. Build original functionality into Flask version
-  - Build a full bracket and display for the user
-2. ~Team vs. Team faceoff options~
-3. User input for four weighted parameters.
-4. Sanitize user inputs
-5. More parameter options?
-6. Make it look pretty
+* Ajax for index page search bar
+* Style the results page
+* Try GET form for /faceoff/new
+* Style form page
+* User input for four weighted parameters.
+* Make it look pretty
 
 
 ## Use Cases

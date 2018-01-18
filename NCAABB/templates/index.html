@@ -1,31 +1,42 @@
 {% include '/partials/header.html' %}
-    <h1>B[racket] B[uilder]</h1>
+<h1>B[racket] B[uilder]</h1>
 
-    <div class="container">
-      <p>Select a team to get some stats or click matchup to see the predicted game results</p>
+<div class="container">
+  <p>Search for a team to get stats, or create a matchup
+    to pick two teams to play each other</p>
 
-      <form class="" action="/teams/" method="get">
+  <form class="" action="/teams/" method="get">
+    <div class="dropdown">
       <div class="input-group input-group-lg" id="teamSearchBar">
-        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Team Abbreviation, e.g., ND" name="team">
+        <input type="text" class="form-control dropdown-toggle"
+        aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+        placeholder="Team Abbreviation, e.g., ND" name="team"
+        data-toggle="dropdown" id="teamSearch">
         <div class="input-group-append">
-          <button id="teamSearchButton" class="btn btn-primary" type="submit">Search Teams!</button>
+          <button id="teamSearchButton" class="btn btn-primary"
+          type="submit">Search Teams!</button>
         </div>
-      </form>
-      </div>
-      <div class="row">
-        <div class="col sm-12" id="team1">
-          <h1></h1>
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="col sm-12">
-          <a href="/faceoff/new">
-            <button type="button" name="button" class="btn btn-primary btn-lg btn-block">Create a matchup!</button>
-          </a>
+        <div class="dropdown-menu" aria-labelledby="teamSearch">
+          <!-- DROPDOWN ITEMS -->
         </div>
       </div>
     </div>
+  </form>
+  <div class="row">
+    <div class="col sm-12" id="team1">
+      <h1></h1>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col sm-12">
+      <a href="/faceoff/new">
+            <button type="button" name="button" class="btn btn-primary btn-lg
+             btn-block">Create a matchup!</button>
+          </a>
+    </div>
+  </div>
+</div>
 
 
 {% include 'partials/footer.html' %}
