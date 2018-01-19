@@ -30,6 +30,7 @@ class Tournament(object):
 
     def find_team(self, team):
         """Build in error handling for bad searches"""
+        team = team.upper()
         if team in self.team_dict:
             return self.team_dict[team]
         else:

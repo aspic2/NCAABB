@@ -6,21 +6,31 @@ tourney = Tournament.Tournament(Team.Data.get_teams()).make_team_dict()
 
 app = Flask(__name__)
 
-@app.route("/")
-def root_route():
-    return render_template('index.html', tourney=tourney)
+@app.route('/teams/_get/')
+def get_teams():
+    """ajax method to return team names"""
+    query = request.args.get('query')
+    length = None
+    if query:
+        query = query.upper()
+        length = len(query)
+        keys = [x for x in tourney.team_dict.keys()]
+        print([x for x in keys if x[0: length] == query])
+        return jsonify([x for x in keys if x[0: length] == query])
+    else:
+        return jsonify("")
 
 @app.route("/teams/")
 def bb_route():
-    if request.args:
-        url = "/teams/" + request.args.get('team').upper()
+    if request.args.get('team'):
+        url = "/teams/" + request.args.get('team')
         return redirect(url)
     return render_template("teams.html", teams=tourney.teams)
 
 @app.route("/teams/<team>/")
 def show_route(team):
     if tourney.find_team(team):
-        return render_template("show.html", team=tourney.find_team(team.upper()))
+        return render_template("show.html", team=tourney.find_team(team))
     else:
         return redirect('/teams/')
 
@@ -53,15 +63,9 @@ def play_game():
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
 
-@app.route('/teams/_get/')
-def get_teams():
-    query = request.args.get('query')
-    """ajax method to return team names"""
-    if query:
-        length = len(query)
-    keys = [x for x in tourney.team_dict.keys()]
-    print(keys)
-    return jsonify([x for x in keys if x[0: length] == query])
+@app.route("/")
+def root_route():
+    return render_template('index.html', tourney=tourney)
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')

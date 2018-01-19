@@ -23,9 +23,15 @@
     {% else %}
       <h1>No Teams Loaded</h1>
     {% endif %}
-    <a href="/faceoff/new">
-      <button type="button" name="button" class="btn btn-primary btn-block">Start a new matchup!</button>
-    </a>
+
+    <div class="row">
+      <div class="col">
+        <a href="/faceoff/new">
+          <button type="button" name="button" class="btn btn-primary btn-block">Start a new matchup!</button>
+        </a>
+      </div>
+    </div>
+
 
 </div>
 {% include 'partials/footer.html' %}

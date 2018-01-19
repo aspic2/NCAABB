@@ -5,5 +5,4 @@ dynamicATag.addEventListener('click', update);
 
 function updateLink(item) {
   item.href += item;
-
 }

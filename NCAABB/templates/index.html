@@ -10,13 +10,13 @@
       <div class="input-group input-group-lg" id="teamSearchBar">
         <input type="text" class="form-control dropdown-toggle"
         aria-label="Large" aria-describedby="inputGroup-sizing-sm"
-        placeholder="Team Abbreviation, e.g., ND" name="team"
-        data-toggle="dropdown" id="teamSearch">
+        placeholder="Team Abbreviation, e.g., ND" name="query"
+        data-toggle="dropdown" id="textInput">
         <div class="input-group-append">
           <button id="teamSearchButton" class="btn btn-primary"
           type="submit">Search Teams!</button>
         </div>
-        <div class="dropdown-menu" aria-labelledby="teamSearch">
+        <div class="dropdown-menu" aria-labelledby="textInput" id="searchDropdown">
           <!-- DROPDOWN ITEMS -->
         </div>
       </div>
@@ -24,7 +24,7 @@
   </form>
   <div class="row">
     <div class="col sm-12" id="team1">
-      <h1></h1>
+      <h1>OR...</h1>
     </div>
 
   </div>
@@ -38,5 +38,8 @@
   </div>
 </div>
 
-
+<div class="js">
+  <script type="text/javascript" src="/static/search.js">
+  </script>
+</div>
 {% include 'partials/footer.html' %}
