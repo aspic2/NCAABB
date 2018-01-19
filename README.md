@@ -22,24 +22,3 @@ but this will be removed soon.
 
 ### License ###
 MIT License and all that comes with that.
-
-
-# NEXT STEPS
-This tool is still in development.
-The command line version will be phased out soon.
-
-* Ajax for index page search bar
-* Style the results page
-* ~~Try GET form for /faceoff/new~~
-* ~~Style form page~~
-* User input for four weighted parameters.
-* Make it look pretty
-
-
-## Use Cases
- - Build a March Madness Bracket
-   - ~~As a bracket builder, I want to pick two teams to play head to head and see
-   who is more likely to win.~~
-   - '' '' '' I want to adjust the weight of stats to fit my own heuristics
-   - '' '' '' I want to work out entire Division brackets at once
-   - ~~'' '' '' I want to score the last game~~
