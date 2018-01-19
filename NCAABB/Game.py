@@ -9,8 +9,6 @@ class Game(object):
     Scoring property also prints a projected score for the game.
     Scoring defaults to False, as it is only used for the championship game.
     """
-    # TODO: refactor scoring to use season's scores for teams and historical
-    # TODO: scores for matchups between these two teams
     def __init__(self, team1, team2, scoring=False):
         self.team1 = team1
         self.team2 = team2

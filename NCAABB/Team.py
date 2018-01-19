@@ -42,7 +42,6 @@ class Team(object):
     def get_scores(self):
         scored = []
         allowed = []
-        # TODO: This command is not looking in the right directory for the database
         connection = sqlite3.connect(Data.newdb)
         query = 'SELECT Team_Score, Opponent_Score FROM "2016to2017Games"' \
                 'WHERE Team=?'\
@@ -70,8 +69,6 @@ class Data:
 
     @staticmethod
     def get_teams():
-        #TODO: You made 3 instances of connection/stream in 3 different methods.
-        #TODO: consider making one instance and passing it into the Data methods.
         teams = []
         connection = sqlite3.connect(Data.newdb)
         query = '''SELECT Team, Region, Seed, Rank, Wins, GameCount FROM "2017TournamentTeams"'''

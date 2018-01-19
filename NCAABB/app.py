@@ -15,15 +15,14 @@ def get_teams():
         query = query.upper()
         length = len(query)
         keys = [x for x in tourney.team_dict.keys()]
-        print([x for x in keys if x[0: length] == query])
         return jsonify([x for x in keys if x[0: length] == query])
     else:
         return jsonify("")
 
 @app.route("/teams/")
 def bb_route():
-    if request.args.get('team'):
-        url = "/teams/" + request.args.get('team')
+    if request.args.get('query'):
+        url = "/teams/" + request.args.get('query')
         return redirect(url)
     return render_template("teams.html", teams=tourney.teams)
 
