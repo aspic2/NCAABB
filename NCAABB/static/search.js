@@ -9,15 +9,16 @@ function getXHR(){
   var xhr = new XMLHttpRequest();
   var urlPath = "/teams/_get/?query=" + encodeURI(textInput.value);
   xhr.open("GET", urlPath, true);
-  //clear contents, then replace with new contents
+  //clear contents before replacing with new contents
   searchDropdown.innerHTML = "";
+
   xhr.onload = function(e) {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         var suggestions = JSON.parse(xhr.responseText);
         if (suggestions){
           suggestions.forEach(function(val){
-            var tag = "<p>" + val + "</p>";
+            var tag = '<li class="list-group-item-action">' + val + '</li>';
             searchDropdown.insertAdjacentHTML('beforeend', tag);
           });
           //xhr.responseText
@@ -35,7 +36,7 @@ function getXHR(){
 }
 
 function addLIEventListeners() {
-  var items = searchDropdown.querySelectorAll("p");
+  var items = searchDropdown.querySelectorAll("li");
   // items always returns True, so need to check length explicitly
   if (items){
     for (var i = 0; i < items.length; i++){
