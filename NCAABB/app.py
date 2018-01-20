@@ -33,12 +33,12 @@ def show_route(team):
     else:
         return redirect('/teams/')
 
-@app.route("/faceoff/new/")
+@app.route("/matchup/new/")
 def create_game():
     """Create a template where user can select two teams to play each other"""
     return render_template("select.html", tourney=tourney)
 
-@app.route("/faceoff/")
+@app.route("/matchup/")
 def play_game():
     """Create a template where user can select two teams to play each other"""
     team1 = None
@@ -58,7 +58,7 @@ def play_game():
         return redirect('/faceoff/new/')
 
 
-@app.route("/faceoff/winner/")
+@app.route("/matchup/winner/")
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
 
