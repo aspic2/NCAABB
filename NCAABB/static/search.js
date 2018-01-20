@@ -8,7 +8,6 @@ teamSearchBar.addEventListener('input', getXHR);
 function getXHR(){
   var xhr = new XMLHttpRequest();
   var urlPath = "/teams/_get/?query=" + encodeURI(textInput.value);
-  console.log(urlPath);
   xhr.open("GET", urlPath, true);
   //clear contents, then replace with new contents
   searchDropdown.innerHTML = "";
@@ -23,7 +22,7 @@ function getXHR(){
           });
           //xhr.responseText
           addLIEventListeners();
-        }      
+        }
       } else {
         console.error(xhr.statusText);
       }
