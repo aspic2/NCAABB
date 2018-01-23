@@ -9,12 +9,16 @@ function getXHR(){
   var xhr = new XMLHttpRequest();
   var urlPath = "/teams/_get/?query=" + encodeURI(textInput.value);
   xhr.open("GET", urlPath, true);
+  console.log("just Opened xhr");
   //clear contents before replacing with new contents
   searchDropdown.innerHTML = "";
-
+  console.log("about to load xhr!");
   xhr.onload = function(e) {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
+    console.log("Just loaded xhr");
+    if (xhr.readyState == 4) {
+      console.log("Ready status === 4!");
+      if (xhr.status == 200) {
+        console.log("status === 200!");
         var suggestions = JSON.parse(xhr.responseText);
         if (suggestions){
           suggestions.forEach(function(val){
@@ -25,12 +29,17 @@ function getXHR(){
           addLIEventListeners();
         }
       } else {
-        console.error(xhr.statusText);
+
+        console.log(xhr.statusText);
+        console.log(xhr.status);
       }
     }
   };
   xhr.onerror = function (e) {
-    console.error(xhr.statusText);
+    console.log("error!");
+    console.log(e);
+    console.log(xhr.status);
+    console.log(xhr.responseText);
   };
   xhr.send(null);
 }
