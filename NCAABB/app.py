@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, url_for, jsonify
 import Team
 import Tournament
+import os
 
 tourney = Tournament.Tournament(Team.Data.get_teams()).make_team_dict()
 
@@ -73,4 +74,4 @@ def not_found_route(path):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=os.environ.get('PORT'))
