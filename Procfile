@@ -1,1 +1,1 @@
-web: gunicorn NCAABB.app.py
+web: python NCAABB.app.py
