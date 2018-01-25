@@ -2,9 +2,9 @@
 teams only. Will add functionality to predict between any two teams in future.
 """
 
-from Team import Data
-from Team import Coefficients
-from Tournament import Tournament
+from NCAABB.Team import Data
+from NCAABB.Team import Coefficients
+from NCAABB.Tournament import Tournament
 
 
 def main():

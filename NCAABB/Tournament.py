@@ -12,7 +12,7 @@ Division winners then face off East-West and Midwest-South Games.
 Championship returns winner between final two teams and prints score projection.
 """
 
-from Game import Game
+from NCAABB.Game import Game
 
 
 class Tournament(object):
