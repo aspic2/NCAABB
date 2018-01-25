@@ -1,1 +1,1 @@
-web: python NCAABB/app.py
+web: python app.py
