@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for, jsonify
-import Team
-import Tournament
+import NCAABB.Team as Team
+import NCAABB.Tournament as Tournament
 import os
 
 tourney = Tournament.Tournament(Team.Data.get_teams()).make_team_dict()
