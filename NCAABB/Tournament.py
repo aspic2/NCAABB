@@ -29,12 +29,11 @@ class Tournament(object):
         return self
 
     def find_team(self, team):
-        """Build in error handling for bad searches"""
+        """Build in error handling for bad searches.
+        No longer necessary with the .get() method."""
         team = team.upper()
-        if team in self.team_dict:
-            return self.team_dict[team]
-        else:
-            return None
+        return self.team_dict.get(team)
+
 
     def start(self):
         """Play four regional games, and return the winners from each.
