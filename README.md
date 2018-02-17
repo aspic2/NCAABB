@@ -1,4 +1,5 @@
-## http://mmbracketbuilder.herokuapp.com ##
+
+## Live site -  https://mmbracketbuilder.herokuapp.com ##
 
 # NCAA B[racket]B[uilder] #
 
