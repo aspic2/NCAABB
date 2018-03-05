@@ -5,23 +5,20 @@ from os import getcwd
 from bs4 import BeautifulSoup
 import csv
 
-
-
 # TODO: Handle "None" values for Scores, teams
-# TODO: Duplicate each game, switching team1 and score with team2 and score
-# TODO: Send values to CSV File
 
 class Scraper(object):
 
     def __init__(self):
+
         self.url = ""
         self.division = "d3/"
-        # starting here for testing purposes
-        self.current = date(2018, 2, 1)
+        self.current = date(2017, 11, 3)
         # set to one day AFTER target stop date
-        self.end = date(2018, 2, 3)
+        self.end = date(2018, 3, 4)
         self.soup = None
         self.data = []
+        self.error_pages = []
 
     def scrape(self):
         url = self.build_url()
@@ -32,11 +29,18 @@ class Scraper(object):
         self.soup = BeautifulSoup(html, 'html.parser')
         return self
 
-    def get_scores(self):
-        self.get_soup(self.scrape())
+    def get_games_html(self):
+        scoreboard = self.soup.find(id="scoreboard")
+        # returns a list with one item in it
+        scoreboard = scoreboard.select(".day")[0]
+        # list of soup objets
+        return scoreboard.find_all("section")
 
+    def get_teams_and_scores(self, games):
         for g in games:
-
+            data = {}
+            teams_and_scores = g.find("table")
+            teams = teams_and_scores.select(".team")
             # TODO: Check that data exists before adding
             data['date'] = str(self.current)
             data['team1'] = teams[0].a.string
@@ -46,9 +50,17 @@ class Scraper(object):
             data['team2_score'] = scores[1].string
             # Skip games where score returns None
             # NOT WORKING!
-            if data['team1_score'] and data['team2_score']:
-                self.data.append(data)
-            print(data.items())
+            if data.get('team1_score') and data.get('team2_score'):
+                row = (data.get('date'), data.get('team1'), data.get('team1_score'), data.get('team2'), data.get('team2_score'))
+                self.data.append(row)
+                inverse_row = (data.get('date'), data.get('team2'), data.get('team2_score'), data.get('team1'), data.get('team1_score'))
+                self.data.append(inverse_row)
+            #print(data.items())
+
+    def get_scores(self):
+        self.get_soup(self.scrape())
+        games = self.get_games_html()
+        self.get_teams_and_scores(games)
         return self
 
     def build_url(self):
@@ -57,27 +69,37 @@ class Scraper(object):
 
 
     def run(self):
+        error_count = 0
         while self.current < self.end:
             for num in range(1, 4):
                 self.division = "d" + str(num) + "/"
                 print("visiting url '{}'".format(self.build_url()))
-                self.get_scores()
-                sleep(3)
+                try:
+                    self.get_scores()
+                    sleep(10)
+                except AttributeError:
+                    error_count += 1
+                    print("error {} reading url '{}'".format(error_count, self.build_url()))
+                    self.error_pages.append(self.build_url())
+                    continue
             self.current += timedelta(days=1)
+        return self
+
 
 
 def write_csv(source):
-    with open('games2017-2018.csv', 'w') as csvfile:
-        writer = csv.writer(csvfile, delimiter=' ',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    with open('games2017-2018.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',
+                            quotechar='"', quoting=csv.QUOTE_MINIMAL)
         # Header
-        writer.writerow(['Date', 'Team', 'TeamScore', 'Opponent', 'OpponentScore', 'Win'])
-        #TODO: convert game to list in this format
-        for game in source:
-            writer.writerow(game)
+        writer.writerow(['Date', 'Team', 'TeamScore', 'Opponent', 'OpponentScore']) #, 'Win'])
+        writer.writerows(source)
 
 
 if __name__ == '__main__':
     scraper = Scraper()
-    #scraper.get_scores()
     scraper.run()
+    write_csv(scraper.data)
+    with open(getcwd() + "/errors.txt", 'a') as f:
+        for error in scraper.error_pages:
+            f.write(error)
