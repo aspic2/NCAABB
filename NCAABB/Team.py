@@ -36,11 +36,11 @@ class Team(object):
                 'WHERE Team = ?' \
                 'ORDER BY Date'
         retrieved = connection.cursor().execute(query, (self.name,))
-        game_stats = retrieved.fetchall()
-        game_stats = [x[0] for x in game_stats]
+        wins = retrieved.fetchall()
+        wins = [x[0] for x in wins]
         # each game is doubled in db
-        self.total_games = len(game_stats)
-        self.wins = reduce(lambda x, y: x + y, game_stats)
+        self.total_games = len(wins)
+        self.wins = sum(wins)
         self.win_percentage = self.wins / self.total_games
         return self
 
