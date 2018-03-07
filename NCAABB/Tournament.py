@@ -25,7 +25,7 @@ class Tournament(object):
 
     def make_team_dict(self):
         for t in self.teams:
-            self.team_dict[t.name] = t
+            self.team_dict[t.name.upper()] = t
         return self
 
     def find_team(self, team):
