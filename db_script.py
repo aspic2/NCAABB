@@ -4,14 +4,14 @@ from os import getcwd
 
 db_path = getcwd() + "/NCAA_Database.db"
 
-games_csv = getcwd() + "/2016-2017Games.csv"
-teams_csv = getcwd() + "/2017TournamentTeams.csv"
+games_csv = getcwd() + "/games2017-2018.csv"
+teams_csv = getcwd() + "/Teams2018.csv"
 
-games_header = '''CREATE TABLE '2016to2017Games'
-(ID INT, Date DATE, Team TEXT, Home INT, Team_Score INT, Opponent TEXT, Opponent_Score INT, Opponent_Home INT, Neutral_Site INT, Win INT, Team_Margin INT,Team_Differential FLOAT(8,4), Opponent_Differential FLOAT(8,4), Division1 INT)'''
+games_header = '''CREATE TABLE 'Games2017to2018'
+(Date DATE, Team TEXT, Team_Score INT, Opponent TEXT, Opponent_Score INT, Win INT)'''
 
-teams_header = '''CREATE TABLE '2017TournamentTeams'
-(ID INT, Rank INT, Team TEXT, GameCount INT, ScoringDifferential FLOAT(8,4), OpponentDifferentialPerGame FLOAT(8,4), StrengthofSchedule INT, Wins INT, WinningPercentage FLOAT(8,4), RankValue FLOAT(8,4),AveragePPG FLOAT(8,4),AverageOppPPG FLOAT(8,4), KenpomRank INT, Seed INT, Region TEXT)'''
+teams_header = '''CREATE TABLE 'TournamentTeams2018'
+(Rank INT, Team TEXT, Seed INT, Region TEXT, Nickname TEXT)'''
 
 def create_table(query):
     conn = sqlite3.connect('NCAA_Database.db')
@@ -28,14 +28,14 @@ def insert_data(source):
         header = data.__next__()
         for row in data:
             if source == games_csv:
-                c.execute("INSERT INTO '2016to2017Games' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)  #14 here
+                c.execute("INSERT INTO 'Games2017to2018' VALUES (?,?,?,?,?,?)", row)  # 6 here
             elif source == teams_csv:
-                c.execute("INSERT INTO '2017TournamentTeams' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)
+                c.execute("INSERT INTO 'TournamentTeams2018' VALUES (?,?,?,?,?)", row)
             else:
                 print("problem creating table")
     conn.commit()
     conn.close()
 
 if __name__ == '__main__':
-    create_table(teams_header)
-    insert_data(teams_csv)
+    create_table(games_header)
+    insert_data(games_csv)
