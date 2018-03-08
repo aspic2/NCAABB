@@ -4,7 +4,6 @@
 
 import sqlite3
 from os import getcwd
-from functools import reduce
 
 
 class Team(object):
@@ -15,8 +14,6 @@ class Team(object):
         self.name = team_info[0].strip()
         self.region = team_info[1]
         self.seed = team_info[2]
-        # TODO: consider making stats a dict instead of initializing several
-        # TODO: default variables and replacing them
         # variable "is_top_25" is not used.
         self.is_top_25 = (team_info[3] < 26)
         # TODO: These values need to be calculated using the games list now
