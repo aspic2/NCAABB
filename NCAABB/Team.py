@@ -32,7 +32,7 @@ class Team(object):
 
     def get_game_results(self):
         connection = sqlite3.connect(Data.newdb)
-        query = 'SELECT Win FROM "GameResults2016to2017"' \
+        query = 'SELECT Win FROM "Games2016to2017"' \
                 'WHERE Team = ?' \
                 'ORDER BY Date'
         retrieved = connection.cursor().execute(query, (self.name,))
@@ -60,7 +60,7 @@ class Team(object):
         scored = []
         allowed = []
         connection = sqlite3.connect(Data.newdb)
-        query = 'SELECT Team_Score, Opponent_Score FROM "GameResults2016to2017"' \
+        query = 'SELECT Team_Score, Opponent_Score FROM "Games2016to2017"' \
                 'WHERE Team=?'\
                 'ORDER BY Date'
         # binding must be a tuple. See https://docs.python.org/3.6/library/sqlite3.html
@@ -101,7 +101,7 @@ class Data:
     @staticmethod
     def get_last_12_games_stats(teams):
         connection = sqlite3.connect(Data.newdb)
-        query = 'SELECT Team, Date, Opponent, Win FROM "GameResults2016to2017"' \
+        query = 'SELECT Team, Date, Opponent, Win FROM "Games2016to2017"' \
                 'WHERE Team IN (Select Team FROM "TournamentTeams2017")' \
                 'ORDER BY Date'
         retrieved = connection.cursor().execute(query)
@@ -121,7 +121,7 @@ class Data:
     @staticmethod
     def get_top_25_stats(teams):
         stream = sqlite3.connect(Data.newdb)
-        query = 'SELECT Team, Opponent, Win FROM "GameResults2016to2017"' \
+        query = 'SELECT Team, Opponent, Win FROM "Games2016to2017"' \
                 'WHERE Team IN (Select Team FROM "TournamentTeams2017")' \
                 'AND Opponent IN (Select Team From "TournamentTeams2017" WHERE Rank <= 25)' \
                 'ORDER BY Date'
