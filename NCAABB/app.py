@@ -68,6 +68,10 @@ def play_game():
 def winner_route():
     return render_template("show.html", game=tourney.start().winner)
 
+@app.route('/about/')
+def about_page():
+    return render_template("about.html")
+
 @app.route("/")
 def root_route():
     return render_template('index.html', tourney=tourney)

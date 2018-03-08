@@ -1,0 +1,40 @@
+{% include '/partials/header.html' %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>About BracketBuilder</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Why did you make this?</h3>
+      <p>Hi, I'm Michael. I created BracketBuilder (BB) as a way to connect
+      more with my sports-loving coworkers. While I do not care for sports, I do
+      enjoy statistics and probability. A March Madness algorithm provides the perfect intersection of my interests and my coworkers.
+    </p>
+    <p>I'm also looking for a job as a software developer, so it's nice to add some projects to my portfolio.
+    </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>How do the picks work?</h3>
+      <p>It's a lot simpler than you probably think. No machine learning (yet). No complicated statistics (yet). BB essentially picks teams the way that I would manually, but without the emotion and with much better precision.
+      </p>
+      <p>BB uses a database of the season's games and scores and calculates a score for each team using four weighted parameters:
+        <ul>
+          <li>Number of games against Top 25 teams</li>
+          <li>Number of wins against Top 25 teams</li>
+          <li>Wins over the last 12 games</li>
+          <li>Overall season winning percentage</li>
+        </ul>One day I may make the weighted parameters editable, but my
+             defaults worked fine last year, and I don't know what
+             overfitting is...
+      </p>
+    </div>
+  </div>
+
+</div>
+
+{% include 'partials/footer.html' %}
