@@ -9,13 +9,13 @@ import csv
 
 class Scraper(object):
 
-    def __init__(self):
+    def __init__(self, base_url):
 
-        self.url = ""
+        self.url = base_url
         self.division = "d3/"
-        self.current = date(2017, 11, 3)
+        self.current = date(2018, 3, 11)
         # set to one day AFTER target stop date
-        self.end = date(2018, 3, 4)
+        self.end = date(2018, 3, 12)
         self.soup = None
         self.data = []
         self.error_pages = []
@@ -42,6 +42,7 @@ class Scraper(object):
             teams_and_scores = g.find("table")
             teams = teams_and_scores.select(".team")
             # TODO: Check that data exists before adding
+            # TODO: data.strip() of leading and trailing spaces
             data['date'] = str(self.current)
             data['team1'] = teams[0].a.string
             data['team2'] = teams[1].a.string
@@ -53,7 +54,7 @@ class Scraper(object):
             if data.get('team1_score') and data.get('team2_score'):
                 row = (data.get('date'), data.get('team1'), data.get('team1_score'), data.get('team2'), data.get('team2_score'))
                 self.data.append(row)
-                inverse_row = (data.get('date'), data.get('team2'), data.get('team2_score'), data.get('team1'), data.get('team1_score'))
+                inverse_row = (data.get('date').strip(), data.get('team2').strip(), data.get('team2_score').strip(), data.get('team1').strip(), data.get('team1_score').strip())
                 self.data.append(inverse_row)
             #print(data.items())
 
@@ -92,12 +93,13 @@ def write_csv(source):
         writer = csv.writer(csvfile, delimiter=',',
                             quotechar='"', quoting=csv.QUOTE_MINIMAL)
         # Header
-        writer.writerow(['Date', 'Team', 'TeamScore', 'Opponent', 'OpponentScore']) #, 'Win'])
+        #writer.writerow(['Date', 'Team', 'TeamScore', 'Opponent', 'OpponentScore']) #, 'Win'])
         writer.writerows(source)
 
 
 if __name__ == '__main__':
-    scraper = Scraper()
+    stats_url = ""
+    scraper = Scraper(stats_url)
     scraper.run()
     write_csv(scraper.data)
     with open(getcwd() + "/errors.txt", 'a') as f:
