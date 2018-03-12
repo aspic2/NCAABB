@@ -16,7 +16,6 @@ class Team(object):
         self.seed = team_info[2]
         # variable "is_top_25" is not used.
         self.is_top_25 = (team_info[3] < 26)
-        # TODO: These values need to be calculated using the games list now
         self.wins = None
         self.total_games = None
         self.win_percentage = None
@@ -34,7 +33,7 @@ class Team(object):
                 'ORDER BY Date'
         retrieved = connection.cursor().execute(query, (self.name,))
         wins = retrieved.fetchall()
-        wins = [x[0] for x in wins]
+        wins = [int(x[0]) for x in wins]
         # each game is doubled in db
         self.total_games = len(wins)
         self.wins = sum(wins)
