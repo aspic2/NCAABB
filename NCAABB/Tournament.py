@@ -13,15 +13,22 @@ Championship returns winner between final two teams and prints score projection.
 """
 
 from NCAABB.Game import Game
+from os import getcwd
+from datetime import datetime
+import csv
 
+
+csv_target = getcwd() + "/data/predictions" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
 
 class Tournament(object):
+
     def __init__(self, teams):
         self.winner = None
         self.teams = sorted(teams, key=lambda x: x.seed)
         self.team_dict = {}
         self.ff = {}
         self.regions = set()
+        self.games = []
 
     def make_team_dict(self):
         for t in self.teams:
@@ -46,14 +53,17 @@ class Tournament(object):
         self.ff["South"] = Regionals(self.teams, "South").play_regionals()
 
         Round.print_final_four_banner(self.ff["East"], self.ff["West"])
-        east_west = Game(self.ff["East"], self.ff["West"]).play().winner
+        east_west = Game(self.ff["East"], self.ff["West"], 5).play()
+        east_west.write_csv(csv_target)
 
         Round.print_final_four_banner(self.ff["Midwest"], self.ff["South"])
-        mw_south = Game(self.ff["Midwest"], self.ff["South"]).play().winner
+        mw_south = Game(self.ff["Midwest"], self.ff["South"], 5).play()
+        mw_south.write_csv(csv_target)
 
-        Round.print_championship(east_west, mw_south)
-        champ = Game(east_west, mw_south, True).play().score_game()
-        self.winner = champ.winner
+        Round.print_championship(east_west.winner, mw_south.winner)
+        championship = Game(east_west.winner, mw_south.winner, 6, True).play().score_game()
+        championship.write_csv(csv_target)
+        self.winner = championship.winner
         return self
 
 
@@ -78,15 +88,26 @@ class Regionals(object):
         print("%s DIVISION GAMES" % self.division.upper())
         print("+" * 80)
         print("\n")
+        #self.write_csv_header(csv_target)
         round_winners = Round.seed_matched_round(self.teams)
         self.gameround += 1
         while len(round_winners) > 2:
             round_winners = Round.successive_round(round_winners, self.gameround)
             self.gameround += 1
+        # TODO: shouldn't this code always run after the while statement exits?
         else:
             regional_champ = Round.successive_round(round_winners, self.gameround)
             self.winner = regional_champ[0]
             return self.winner
+
+    def write_csv_header(self, target):
+        with open(target, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            # Header
+            writer.writerow(["Round " + str(self.gameround), '', '', '', ''])
+            #writer.writerow(['Team', 'TeamScore', 'Opponent', 'OpponentScore', 'Win'])
+        return self
 
 
 class Round:
@@ -104,8 +125,9 @@ class Round:
         seed_round_winners = []
         for team in range(1, len(seeded_teams) // 2 + 1):
             team1, team2 = seeded_teams.pop(0), seeded_teams.pop(-1)
-            game_winner = Game(team1, team2).play().winner
-            seed_round_winners.insert(team, game_winner)
+            game = Game(team1, team2, round_no).play()
+            game.write_csv(csv_target)
+            seed_round_winners.insert(team, game.winner)
             print("\n")
         return seed_round_winners
 
@@ -120,8 +142,9 @@ class Round:
         round_winners = []
         for team in range(1, len(teams) // 2 + 1):
             team1, team2 = teams.pop(0), teams.pop(-1)
-            game_winner = Game(team1, team2).play().winner
-            round_winners.insert(team, game_winner)
+            game = Game(team1, team2, round_no).play()
+            game.write_csv(csv_target)
+            round_winners.insert(team, game.winner)
             print("\n")
         return round_winners
 
