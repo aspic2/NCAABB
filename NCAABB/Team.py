@@ -27,7 +27,7 @@ class Team(object):
         self.points_allowed = []
 
     def get_game_results(self):
-        connection = sqlite3.connect(Data.newdb)
+        connection = sqlite3.connect(Data.ncaa_db)
         query = 'SELECT Win FROM "Games2017to2018"' \
                 'WHERE Team = ?' \
                 'ORDER BY Date'
@@ -55,7 +55,7 @@ class Team(object):
     def get_scores(self):
         scored = []
         allowed = []
-        connection = sqlite3.connect(Data.newdb)
+        connection = sqlite3.connect(Data.ncaa_db)
         query = 'SELECT Team_Score, Opponent_Score FROM "Games2017to2018"' \
                 'WHERE Team=?'\
                 'ORDER BY Date'
@@ -78,12 +78,12 @@ class Data:
     for each individual team).
     """
 
-    newdb = 'NCAA_Database.db'
+    ncaa_db = 'ncaa.db'
 
     @staticmethod
     def get_teams():
         teams = []
-        connection = sqlite3.connect(Data.newdb)
+        connection = sqlite3.connect(Data.ncaa_db)
         query = '''SELECT Team, Region, Seed, Rank FROM "TournamentTeams2018"'''
         retrieved = connection.cursor().execute(query)
         team_data = retrieved.fetchall()
@@ -96,7 +96,7 @@ class Data:
 
     @staticmethod
     def get_last_12_games_stats(teams):
-        connection = sqlite3.connect(Data.newdb)
+        connection = sqlite3.connect(Data.ncaa_db)
         query = 'SELECT Team, Date, Opponent, Win FROM "Games2017to2018"' \
                 'WHERE Team IN (Select Team FROM "TournamentTeams2018")' \
                 'ORDER BY Date'
@@ -116,7 +116,7 @@ class Data:
 
     @staticmethod
     def get_top_25_stats(teams):
-        stream = sqlite3.connect(Data.newdb)
+        stream = sqlite3.connect(Data.ncaa_db)
         query = 'SELECT Team, Opponent, Win FROM "Games2017to2018"' \
                 'WHERE Team IN (Select Team FROM "TournamentTeams2018")' \
                 'AND Opponent IN (Select Team From "TournamentTeams2018" WHERE Rank <= 25)' \
