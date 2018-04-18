@@ -40,7 +40,6 @@ class Team(object):
         self.win_percentage = self.wins / self.total_games
         return self
 
-
     def calculate_rating(self, coefficients):
         """Add together the calculations from here to come up with a positive
         number. See Coefficents() for more info."""
@@ -68,6 +67,30 @@ class Team(object):
         connection.close()
         self.points_scored = scored
         self.points_allowed = allowed
+        return self
+
+
+class GameData(object):
+    """rewrite the Data class as an object passed to each Team().
+    Team() then builds its score using GameData().
+    """
+    def __init__(self, team_name):
+        self.team_name = team_name
+        self.db = 'ncaa.db'
+        self.games = []
+
+    def get_games(self):
+        connection = sqlite3.connect(self.db)
+        # TODO: CHECK THIS QUERY BEFORE RUNNING. You will need a join for new table.
+        query = 'SELECT Date, Game, Team, Team_Score, Opponent, Win' \
+        'FROM "Games2017to2018"' \
+                'WHERE Team = ?' \
+                'ORDER BY Date'
+        retrieved = connection.cursor().execute(query, (self.name,))
+        games = retrieved.fetchall()
+        games = [int(x[0]) for x in games]
+        # each game is doubled in db
+        self.games = games
         return self
 
 
