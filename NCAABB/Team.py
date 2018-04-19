@@ -86,7 +86,7 @@ class GameData(object):
         'FROM "Games2017to2018"' \
                 'WHERE Team = ?' \
                 'ORDER BY Date'
-        retrieved = connection.cursor().execute(query, (self.name,))
+        retrieved = connection.cursor().execute(query, (self.team_name,))
         games = retrieved.fetchall()
         games = [int(x[0]) for x in games]
         # each game is doubled in db
