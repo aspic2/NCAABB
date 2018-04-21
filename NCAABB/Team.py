@@ -1,6 +1,4 @@
 #Team Class and Data Class
-#TODO: work on encapsulation for Team objects. Data methods should simply
-#TODO: retrieve data for Team, not alter objects in Team.
 
 import sqlite3
 from os import getcwd
@@ -91,7 +89,6 @@ class GameData(object):
 
     def get_games(self):
         connection = sqlite3.connect(self.db)
-        # TODO: CHECK THIS QUERY BEFORE RUNNING. You will need a join for new table.
         query = 'SELECT Date, Game, Team, Team_Score, Opponent, Win' \
         'FROM "Games2017to2018"' \
                 'WHERE Team = ?' \
@@ -104,7 +101,6 @@ class GameData(object):
         return self
 
     def get_last_12_games(self):
-        # TODO: revise this to work for single team
         connection = sqlite3.connect(self.db)
         # TODO: Revise this to read both Team and Opponent name,
         # TODO: eliminating the need for duplicate rows in the db
@@ -116,7 +112,6 @@ class GameData(object):
         #wins_in_last_12_games = 0
         last_12_games = game_stats[-12::1]
         self.wins_in_last_12_games = sum(x[3] for x in last_12_games)
-        # TODO: set the team's wins_in_last_12_games value
         connection.close()
         return self
 
