@@ -93,6 +93,26 @@ class GameData(object):
         self.games = games
         return self
 
+    def get_last_12_games(self):
+        # TODO: revise this to work for single team
+        connection = sqlite3.connect(self.db)
+        # TODO: Revise this to read both Team and Opponent name,
+        # TODO: eliminating the need for duplicate rows in the db
+        query = 'SELECT Team, Date, Opponent, Win FROM "Games2017to2018"' \
+                'WHERE Team = ?' \
+                'ORDER BY Date'
+        retrieved = connection.cursor().execute(query, (self.team_name,))
+        game_stats = retrieved.fetchall()
+        #wins_in_last_12_games = 0
+        last_12_games = game_stats[-12::1]
+        wins_in_last_12_games = sum(x[3] for x in last_12_games)
+        # for game in game_stats[-12::1]:
+        #     wins_in_last_12_games += game[3]
+        # TODO: set the team's wins_in_last_12_games value
+        connection.close()
+        return wins_in_last_12_games
+
+
 
 
 class Data:
