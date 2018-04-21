@@ -38,6 +38,12 @@ class Team(object):
         self.total_games = len(wins)
         self.wins = sum(wins)
         self.win_percentage = self.wins / self.total_games
+        # TODO: condense above instructions and below instructions all within
+        # TODO: GameData()
+        game_data = GameData(self.name).get_last_12_games().get_results_against_top_25_teams()
+        self.p12_wins = game_data.wins_in_last_12_games
+        self.t25_games = game_data.number_of_top_25_games
+        self.t25_wins = game_data.top_25_game_wins
         return self
 
     def calculate_rating(self, coefficients):
@@ -54,7 +60,7 @@ class Team(object):
     def get_scores(self):
         scored = []
         allowed = []
-        connection = sqlite3.connect(Data.ncaa_db)
+        connection = sqlite3.connect(self.db)
         query = 'SELECT Team_Score, Opponent_Score FROM "Games2017to2018"' \
                 'WHERE Team=?'\
                 'ORDER BY Date'
@@ -78,6 +84,10 @@ class GameData(object):
         self.team_name = team_name
         self.db = 'ncaa.db'
         self.games = []
+        self.wins = 0
+        self.wins_in_last_12_games = 0
+        self.number_of_top_25_games = 0
+        self.top_25_game_wins = 0
 
     def get_games(self):
         connection = sqlite3.connect(self.db)
@@ -105,12 +115,24 @@ class GameData(object):
         game_stats = retrieved.fetchall()
         #wins_in_last_12_games = 0
         last_12_games = game_stats[-12::1]
-        wins_in_last_12_games = sum(x[3] for x in last_12_games)
-        # for game in game_stats[-12::1]:
-        #     wins_in_last_12_games += game[3]
+        self.wins_in_last_12_games = sum(x[3] for x in last_12_games)
         # TODO: set the team's wins_in_last_12_games value
         connection.close()
-        return wins_in_last_12_games
+        return self
+
+    def get_results_against_top_25_teams(self):
+        conn = sqlite3.connect(self.db)
+        query = 'SELECT Team, Opponent, Win FROM "Games2017to2018"' \
+                'WHERE Team = ?' \
+                'AND Opponent IN (Select Team From "TournamentTeams2018" WHERE Rank <= 25)' \
+                'ORDER BY Date'
+        retrieved = conn.cursor().execute(query, (self.team_name,))
+        game_stats = retrieved.fetchall()
+        number_of_top_25_games = len(game_stats)
+        wins = sum(x[2] for x in game_stats)
+        self.number_of_top_25_games = number_of_top_25_games
+        self.top_25_game_wins = wins
+        return self
 
 
 
@@ -133,8 +155,8 @@ class Data:
         for x in team_data:
             teams.append(Team(x).get_game_results())
         connection.close()
-        Data.get_last_12_games_stats(teams)
-        Data.get_top_25_stats(teams)
+        #Data.get_last_12_games_stats(teams)
+        #Data.get_top_25_stats(teams)
         return teams
 
     @staticmethod
