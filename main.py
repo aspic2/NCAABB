@@ -11,7 +11,8 @@ def main():
 
     all_teams = Data.get_teams()
     # TODO: Can calculate_rating() be added to get_teams() ?
-    c = Coefficients()
+    # Coefficents params PLAY_T25=1, WIN_T25=5, WIN_L12=2, PERCENT=100
+    c = Coefficients(1, 5, 2, 100)
     for team in all_teams:
         team.calculate_rating(c)
     t2017 = Tournament(all_teams)
