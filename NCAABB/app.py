@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, request, url_for, jsonify
-import secrets
 import string
 import os
 import NCAABB.Team as Team
@@ -9,8 +8,7 @@ import NCAABB.Tournament as Tournament
 tourney = Tournament.Tournament(Team.Data.get_teams()).make_team_dict()
 
 app = Flask(__name__)
-app.secret_key = ''.join(secrets.choice(
-    string.ascii_letters + string.digits) for n in range(16))
+app.secret_key = str(os.urandom(20))
 
 @app.route('/teams/_get/')
 def get_teams():
