@@ -3,6 +3,7 @@
 import sqlite3
 from os import getcwd
 
+ncaa_db = 'ncaa.db'
 
 class Team(object):
     """Team class holds team identifying info and calculates the team's rating.
