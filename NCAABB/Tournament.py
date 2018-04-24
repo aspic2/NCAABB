@@ -23,6 +23,8 @@ import sqlite3
 csv_target = getcwd() + "/data/predictions" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
 
 class Tournament(object):
+    """This central Class builds and holds all of the teams.
+    It also sorts all the games and can run them in order."""
 
     def __init__(self, teams):
         self.winner = None
@@ -49,8 +51,6 @@ class Tournament(object):
         return self
 
     def find_team(self, team):
-        """Build in error handling for bad searches.
-        No longer necessary with the .get() method."""
         team = team.upper()
         return self.team_dict.get(team)
 

@@ -134,9 +134,7 @@ class GameData(object):
 
 
 class Data:
-    """Static methods to retrieve team data from database. All operations
-    work in bulk (you pass in a list of teams to get data, rather than getting data
-    for each individual team).
+    """This class is no longer used.
     """
 
     ncaa_db = 'ncaa.db'
