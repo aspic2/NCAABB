@@ -2,7 +2,9 @@
 
 import sqlite3
 from os import getcwd
+from NCAABB.game_data import GameData
 
+ncaa_db = 'ncaa.db'
 
 class Team(object):
     """Team class holds team identifying info and calculates the team's rating.
@@ -25,7 +27,7 @@ class Team(object):
         self.points_allowed = []
 
     def get_game_results(self):
-        connection = sqlite3.connect(Data.ncaa_db)
+        connection = sqlite3.connect(ncaa_db)
         query = 'SELECT Win FROM "Games2017to2018"' \
                 'WHERE Team = ?' \
                 'ORDER BY Date'
@@ -58,7 +60,7 @@ class Team(object):
     def get_scores(self):
         scored = []
         allowed = []
-        connection = sqlite3.connect(self.db)
+        connection = sqlite3.connect(ncaa_db)
         query = 'SELECT Team_Score, Opponent_Score FROM "Games2017to2018"' \
                 'WHERE Team=?'\
                 'ORDER BY Date'
@@ -72,138 +74,3 @@ class Team(object):
         self.points_scored = scored
         self.points_allowed = allowed
         return self
-
-
-class GameData(object):
-    """rewrite the Data class as an object passed to each Team().
-    Team() then builds its score using GameData().
-    """
-    def __init__(self, team_name):
-        self.team_name = team_name
-        self.db = 'ncaa.db'
-        self.games = []
-        self.wins = 0
-        self.wins_in_last_12_games = 0
-        self.number_of_top_25_games = 0
-        self.top_25_game_wins = 0
-
-    def get_games(self):
-        connection = sqlite3.connect(self.db)
-        query = 'SELECT Date, Game, Team, Team_Score, Opponent, Win' \
-        'FROM "Games2017to2018"' \
-                'WHERE Team = ?' \
-                'ORDER BY Date'
-        retrieved = connection.cursor().execute(query, (self.team_name,))
-        games = retrieved.fetchall()
-        games = [int(x[0]) for x in games]
-        # each game is doubled in db
-        self.games = games
-        return self
-
-    def get_last_12_games(self):
-        connection = sqlite3.connect(self.db)
-        # TODO: Revise this to read both Team and Opponent name,
-        # TODO: eliminating the need for duplicate rows in the db
-        query = 'SELECT Team, Date, Opponent, Win FROM "Games2017to2018"' \
-                'WHERE Team = ?' \
-                'ORDER BY Date'
-        retrieved = connection.cursor().execute(query, (self.team_name,))
-        game_stats = retrieved.fetchall()
-        #wins_in_last_12_games = 0
-        last_12_games = game_stats[-12::1]
-        self.wins_in_last_12_games = sum(x[3] for x in last_12_games)
-        connection.close()
-        return self
-
-    def get_results_against_top_25_teams(self):
-        conn = sqlite3.connect(self.db)
-        query = 'SELECT Team, Opponent, Win FROM "Games2017to2018"' \
-                'WHERE Team = ?' \
-                'AND Opponent IN (Select Team From "TournamentTeams2018" WHERE Rank <= 25)' \
-                'ORDER BY Date'
-        retrieved = conn.cursor().execute(query, (self.team_name,))
-        game_stats = retrieved.fetchall()
-        number_of_top_25_games = len(game_stats)
-        wins = sum(x[2] for x in game_stats)
-        self.number_of_top_25_games = number_of_top_25_games
-        self.top_25_game_wins = wins
-        return self
-
-
-
-
-class Data:
-    """Static methods to retrieve team data from database. All operations
-    work in bulk (you pass in a list of teams to get data, rather than getting data
-    for each individual team).
-    """
-
-    ncaa_db = 'ncaa.db'
-
-    @staticmethod
-    def get_teams():
-        teams = []
-        connection = sqlite3.connect(Data.ncaa_db)
-        query = '''SELECT Team, Region, Seed, Rank FROM "TournamentTeams2018"'''
-        retrieved = connection.cursor().execute(query)
-        team_data = retrieved.fetchall()
-        for x in team_data:
-            teams.append(Team(x).get_game_results())
-        connection.close()
-        #Data.get_last_12_games_stats(teams)
-        #Data.get_top_25_stats(teams)
-        return teams
-
-    @staticmethod
-    def get_last_12_games_stats(teams):
-        connection = sqlite3.connect(Data.ncaa_db)
-        query = 'SELECT Team, Date, Opponent, Win FROM "Games2017to2018"' \
-                'WHERE Team IN (Select Team FROM "TournamentTeams2018")' \
-                'ORDER BY Date'
-        retrieved = connection.cursor().execute(query)
-        game_stats = retrieved.fetchall()
-        for x in teams:
-            games_for_x = []
-            for game in game_stats:
-                if game[0] == x.name:
-                    games_for_x.append(game)
-            wins_in_last_12_games = 0
-            # clumsy way to get last 12 games
-            for game in games_for_x[-12::1]:
-                wins_in_last_12_games += game[3]
-            x.p12_wins = wins_in_last_12_games
-        connection.close()
-
-    @staticmethod
-    def get_top_25_stats(teams):
-        stream = sqlite3.connect(Data.ncaa_db)
-        query = 'SELECT Team, Opponent, Win FROM "Games2017to2018"' \
-                'WHERE Team IN (Select Team FROM "TournamentTeams2018")' \
-                'AND Opponent IN (Select Team From "TournamentTeams2018" WHERE Rank <= 25)' \
-                'ORDER BY Date'
-        retrieved = stream.cursor().execute(query)
-        game_stats = retrieved.fetchall()
-        for x in teams:
-            games_for_x = []
-            top_25_wins = 0
-            for game in game_stats:
-                if game[0] == x.name:
-                    games_for_x.append(game)
-            top_25_games = len(games_for_x)
-            x.t25_games = top_25_games
-            for game in games_for_x:
-                top_25_wins += game[2]
-            x.t25_wins = top_25_wins
-        stream.close()
-
-
-class Coefficients(object):
-
-    def __init__(self, PLAY_T25=1, WIN_T25=5, WIN_L12=2, PERCENT=100):
-        """The coefficients were more art than science. More guessing than art.
-        Default vals: 1, 5, 2, and 100, respectively.
-        """
-        self.PLAY_T25 = PLAY_T25
-        self.WIN_T25 = WIN_T25
-        self.WIN_L12 = WIN_L12
-        self.PERCENT = PERCENT

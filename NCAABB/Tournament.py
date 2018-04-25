@@ -13,22 +13,37 @@ Championship returns winner between final two teams and prints score projection.
 """
 
 from NCAABB.Game import Game
+from NCAABB.Team import Team, ncaa_db
 from os import getcwd
 from datetime import datetime
 import csv
+import sqlite3
 
 
 csv_target = getcwd() + "/data/predictions" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
 
 class Tournament(object):
+    """This central Class builds and holds all of the teams.
+    It also sorts all the games and can run them in order."""
 
-    def __init__(self, teams):
+    def __init__(self):
         self.winner = None
-        self.teams = sorted(teams, key=lambda x: x.seed)
+        self.teams = sorted(self.get_teams(), key=lambda x: x.seed)
         self.team_dict = {}
         self.ff = {}
         self.regions = set()
         self.games = []
+
+    def get_teams(self):
+        teams = []
+        connection = sqlite3.connect(ncaa_db)
+        query = '''SELECT Team, Region, Seed, Rank FROM "TournamentTeams2018"'''
+        retrieved = connection.cursor().execute(query)
+        team_data = retrieved.fetchall()
+        for x in team_data:
+            teams.append(Team(x).get_game_results())
+        connection.close()
+        return teams
 
     def make_team_dict(self):
         for t in self.teams:
@@ -36,8 +51,6 @@ class Tournament(object):
         return self
 
     def find_team(self, team):
-        """Build in error handling for bad searches.
-        No longer necessary with the .get() method."""
         team = team.upper()
         return self.team_dict.get(team)
 
