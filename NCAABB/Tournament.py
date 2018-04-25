@@ -26,7 +26,7 @@ class Tournament(object):
     """This central Class builds and holds all of the teams.
     It also sorts all the games and can run them in order."""
 
-    def __init__(self, teams):
+    def __init__(self):
         self.winner = None
         self.teams = sorted(self.get_teams(), key=lambda x: x.seed)
         self.team_dict = {}

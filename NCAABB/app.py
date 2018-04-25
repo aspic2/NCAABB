@@ -3,9 +3,10 @@ import string
 import os
 import NCAABB.Team as Team
 import NCAABB.Tournament as Tournament
+from NCAABB.coefficients import Coefficients
 
 
-tourney = Tournament.Tournament(Team.Data.get_teams()).make_team_dict()
+tourney = Tournament.Tournament().make_team_dict()
 
 app = Flask(__name__)
 app.secret_key = str(os.urandom(20))
@@ -52,7 +53,7 @@ def play_game():
         team1 = tourney.find_team(request.args.get('team1'))
         team2 = tourney.find_team(request.args.get('team2'))
     if team1 and team2:
-        coef = Team.Coefficients()
+        coef = Coefficients()
         game = Tournament.Game(
                 team1.calculate_rating(coef), team2.calculate_rating(coef)).play()
         if request.args.get('score'):
