@@ -5,7 +5,7 @@
 Run Flask App from here
 """
 
-from NCAABB.app import app
+from ncaabb.app import app
 import os
 
 if __name__ == '__main__':

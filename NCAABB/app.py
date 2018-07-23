@@ -1,9 +1,9 @@
 from flask import Flask, render_template, redirect, request, url_for, jsonify
 import string
 import os
-import NCAABB.Team as Team
-import NCAABB.Tournament as Tournament
-from NCAABB.coefficients import Coefficients
+import ncaabb.team as Team
+import ncaabb.tournament as Tournament
+from ncaabb.coefficients import Coefficients
 
 
 tourney = Tournament.Tournament().make_team_dict()

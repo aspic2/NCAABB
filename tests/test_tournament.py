@@ -1,7 +1,7 @@
 
 import unittest
-from NCAABB import Tournament
-from NCAABB import Team
+from ncaabb import tournament
+from ncaabb import team
 import random
 
 
@@ -12,7 +12,7 @@ class TestTournament(unittest.TestCase):
         cls.teams = []
         for val in range(1, 11):
             wins = random.randrange(0, 33)
-            new_team = Team.Team([("Team " + str(val)), "Region", val, wins,
+            new_team = team.Team([("Team " + str(val)), "Region", val, wins,
                                   random.randrange(wins, 33)])
             cls.teams.append(new_team)
 
