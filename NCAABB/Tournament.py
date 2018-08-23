@@ -12,8 +12,8 @@ Division winners then face off East-West and Midwest-South Games.
 Championship returns winner between final two teams and prints score projection.
 """
 
-from NCAABB.Game import Game
-from NCAABB.Team import Team, ncaa_db
+from ncaabb.game import Game
+from ncaabb.team import Team, ncaa_db
 from os import getcwd
 from datetime import datetime
 import csv

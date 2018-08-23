@@ -2,7 +2,7 @@
 
 import sqlite3
 from os import getcwd
-from NCAABB.game_data import GameData
+from ncaabb.game_data import GameData
 
 ncaa_db = 'ncaa.db'
 
