@@ -2,7 +2,7 @@ import csv
 import sqlite3
 from os import getcwd
 
-db_path = getcwd() + "/NCAA_Database.db"
+db_path = getcwd() + "/ncaa.db"
 
 games_csv = getcwd() + "/games2017-2018.csv"
 teams_csv = getcwd() + "/Teams2018.csv"
@@ -14,19 +14,20 @@ teams_header = '''CREATE TABLE 'TournamentTeams2018'
 (Rank INT, Team TEXT, Seed INT, Region TEXT, Nickname TEXT)'''
 
 def create_table(query):
-    conn = sqlite3.connect('NCAA_Database.db')
+    conn = sqlite3.connect('ncaa.db')
     c = conn.cursor()
     c.execute(query)
     conn.commit()
     conn.close()
 
 def insert_data(source):
-    conn = sqlite3.connect('NCAA_Database.db')
+    conn = sqlite3.connect('ncaa.db')
     c = conn.cursor()
     with open(source, newline='') as csv_file:
         data = csv.reader(csv_file, delimiter=',', quotechar='|')
         header = data.__next__()
         for row in data:
+            row = [row[0], row[1], row[2], row[3], row[4], row[5]]
             if source == games_csv:
                 c.execute("INSERT INTO 'Games2017to2018' VALUES (?,?,?,?,?,?)", row)  # 6 here
             elif source == teams_csv:
